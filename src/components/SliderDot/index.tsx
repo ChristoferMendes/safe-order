@@ -16,6 +16,12 @@ export function SliderDot({ item, scrollX, index }: ISliderDot) {
     outputRange: [12, 30, 12],
     extrapolate: 'clamp',
   });
+
+  const backGroundColor = scrollX.interpolate({
+    inputRange,
+    outputRange: ['#ccc', '#000', '#ccc'],
+    extrapolate: 'clamp',
+  });
   return (
     <Animated.View
       key={item}
@@ -23,7 +29,7 @@ export function SliderDot({ item, scrollX, index }: ISliderDot) {
         height: 12,
         width: dotWidth,
         borderRadius: 12,
-        backgroundColor: '#000',
+        backgroundColor: backGroundColor,
         marginLeft: 12,
       }}
     />

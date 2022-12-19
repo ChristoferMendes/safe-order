@@ -51,8 +51,6 @@ export function ImageScroller() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleOnScroll}
-        onViewableItemsChanged={handleOnViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
       />
       <View display="flex" flexDir="row" justifyContent="center" mt={2}>
         {images.map((item, idx) => (
