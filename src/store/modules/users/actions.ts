@@ -1,4 +1,4 @@
-import { IUser } from '../../../screens/SignUp/SignUp';
+import { IUser } from '../../../screens/Register/Register';
 import { ActionTypes } from './types';
 
 export function storeUserInfo(userInfo: IUser) {
