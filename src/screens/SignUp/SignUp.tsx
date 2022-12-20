@@ -1,7 +1,6 @@
 import {
-  View, Text, Center, Box, Heading, VStack, FormControl, Input, Button,
+  Center, Box, Heading, VStack, FormControl, Input, Button,
 } from 'native-base';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignUp() {
   return (
