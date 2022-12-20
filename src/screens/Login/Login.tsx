@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 import {
   View,
   Text,
@@ -11,17 +12,19 @@ import {
   Link,
   HStack,
   Icon,
+  Spinner,
 } from 'native-base';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { api } from '../../services/api';
 import { RootState } from '../../store';
-import { IUser } from '../../screens/Register/Register';
+import { IUser } from '../Register/Register';
 import { useSuccesToast } from '../../components/SuccessToast';
+import { setToken } from '../../store/modules/token/actions';
 
 export interface NavigationsParamList {
   Register: undefined
@@ -38,32 +41,35 @@ type SignUpNavigation = NavigationProp<NavigationsParamList, 'Register'>;
 type HomeScreenNavigation = NavigationProp<NavigationsParamList, 'Home'>
 
 export default function Login() {
-  const user = useSelector<RootState, IUser | null>((state) => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const navigation = useNavigation<SignUpNavigation | HomeScreenNavigation>();
   const showToast = useSuccesToast({ message: 'Logged in with success' });
+  const dispatch = useDispatch();
+  const user = useSelector<RootState, IUser | null>((state) => state.user);
+  const tokenStorageKey = '@storage_token';
 
-  const handleNavigateToRegister = () => {
+  const handleNavigateToRegister = useCallback(() => {
     navigation.navigate('Register');
-  };
-
-  const handleNavigateToHome = () => {
-    navigation.navigate('Home');
-  };
+  }, []);
 
   const storeUserToken = async (token: string) => {
-    const tokenStorageKey = '@storage_token';
     await AsyncStorage.setItem(tokenStorageKey, token);
   };
 
+  const getToken = async () => await AsyncStorage.getItem(tokenStorageKey);
+
   const handleUserSignIn = async () => {
-    const res = await api.post<ISessionResponse>('/sessions', { email, password });
+    setLoading(true);
+    const res = await api.post<ISessionResponse>('/sessions', { email: user?.email ?? email, password });
     const { token } = res.data;
     await storeUserToken(token);
-    handleNavigateToHome();
+    const tokenFromStorage = await getToken();
+    dispatch(setToken(tokenFromStorage));
     showToast();
+    setLoading(false);
   };
 
   return (
@@ -94,7 +100,7 @@ export default function Login() {
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label>Email</FormControl.Label>
-            <Input onChangeText={setEmail} value={user?.email} />
+            <Input onChangeText={setEmail} value={user?.email ?? email} placeholder="Email" />
           </FormControl>
           <FormControl>
             <FormControl.Label>Password</FormControl.Label>
@@ -128,7 +134,7 @@ export default function Login() {
 
           </FormControl>
           <Button mt="2" colorScheme="green" onPress={handleUserSignIn}>
-            Sign in
+            {loading ? <Spinner color="cyan.500" size="sm" /> : 'Login'}
           </Button>
           <HStack mt="6" justifyContent="center">
             <Text
@@ -142,7 +148,7 @@ export default function Login() {
               {' '}
             </Text>
             <View>
-              <Text onPress={handleNavigateToRegister}>Sign Up</Text>
+              <Text onPress={handleNavigateToRegister}>Register</Text>
             </View>
           </HStack>
         </VStack>

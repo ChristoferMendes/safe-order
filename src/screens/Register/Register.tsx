@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import {
-  Center, Box, Heading, VStack, Button, Pressable, Icon, useToast, Text,
+  Center, Box, Heading, VStack, Button, Pressable, Icon,
 } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

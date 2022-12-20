@@ -1,5 +1,5 @@
 import {
-  Box, useToast, Text, View,
+  Box, useToast, Text,
 } from 'native-base';
 
 export function useSuccesToast({ message }: { message: string }) {
