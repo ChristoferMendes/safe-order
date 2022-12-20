@@ -23,7 +23,7 @@ export function Carousel({ item }: { item: string }) {
         display="flex"
         alignItems="center"
       >
-        <Image source={{ uri: item }} key={item} alt="img" size={120} rounded="lg" bottom="1.5" />
+        <Image source={{ uri: item }} key={item} alt="img" size={120} rounded="full" bottom="3.5" />
         <HStack width="full" alignItems="center" justifyContent="space-evenly" my={5}>
           <Text fontWeight="semibold">Image Description</Text>
           <Button rounded="3xl" width={100} bgColor="black" onPress={() => console.log('pressed')}>aaa</Button>
