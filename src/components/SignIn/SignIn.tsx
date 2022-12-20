@@ -18,7 +18,10 @@ import { useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 import { api } from '../../services/api';
+import { RootState } from '../../store';
+import { IUser } from '../../screens/SignUp/SignUp';
 
 interface NavigationsParamList {
   SignUp: undefined
@@ -34,6 +37,7 @@ type SignUpNavigation = NavigationProp<NavigationsParamList, 'SignUp'>;
 type HomeScreenNavigation = NavigationProp<NavigationsParamList, 'Home'>
 
 export default function SignIn() {
+  const user: IUser = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -101,11 +105,12 @@ export default function SignIn() {
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label>Email</FormControl.Label>
-            <Input onChangeText={setEmail} />
+            <Input onChangeText={setEmail} value={user.email ?? email} />
           </FormControl>
           <FormControl>
             <FormControl.Label>Password</FormControl.Label>
             <Input
+              value={password}
               onChangeText={setPassword}
               w={{
                 base: '100%',

@@ -1,17 +1,14 @@
 import {
-  Box, Image, ScrollView, View, Text, Button, HStack, FlatList,
+  View, FlatList,
 } from 'native-base';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
-  Animated, Dimensions, NativeScrollEvent, NativeSyntheticEvent, ViewToken,
+  Animated, NativeScrollEvent, NativeSyntheticEvent,
 } from 'react-native';
 import { Carousel } from '../Carousel';
 import { SliderDot } from '../SliderDot';
 
-const { width, height } = Dimensions.get('window');
-
 export function ImageScroller() {
-  const [index, setIndex] = useState<number | null>(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const images = [
     'https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -32,15 +29,6 @@ export function ImageScroller() {
   };
 
   const renderItem = ({ item }: { item: string}) => <Carousel item={item} />;
-
-  const handleOnViewableItemsChanged = useRef((info: { viewableItems: ViewToken[]}) => {
-    const { viewableItems } = info;
-    setIndex(viewableItems[0].index);
-  }).current;
-
-  const viewabilityConfig = useRef({
-    itemVisiblePercentThreshold: 50,
-  }).current;
 
   return (
     <View>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { SignUp } from '../screens/SignUp';
 import Login from '../screens/Login';
 import { Home } from '../screens/Home';
+import { TestForm } from '../components/TestForm';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,7 @@ export function StackNavigator() {
       ) : (
         <>
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="SignUp" component={TestForm} />
         </>
       )}
     </Stack.Navigator>

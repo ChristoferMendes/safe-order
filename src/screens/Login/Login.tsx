@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { api } from '../../services/api';
 import { RootState } from '../../store';
 import SignIn from '../../components/SignIn/SignIn';
 
