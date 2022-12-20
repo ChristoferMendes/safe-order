@@ -23,9 +23,10 @@ import { api } from '../../services/api';
 import { RootState } from '../../store';
 import { IUser } from '../../screens/SignUp/SignUp';
 
-interface NavigationsParamList {
+export interface NavigationsParamList {
   SignUp: undefined
   Home: undefined
+  Login: undefined
 }
 
 interface ISessionResponse {

@@ -1,12 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import {
   Center, Box, Heading, VStack, FormControl, Input, Button,
 } from 'native-base';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { NavigationsParamList } from '../../components/SignIn/SignIn';
 import { api } from '../../services/api';
-import { RootState } from '../../store';
 import { storeUserInfo } from '../../store/modules/users/actions';
 
 export interface IUser {
@@ -19,6 +18,8 @@ export interface IUser {
   avatar_url: string | null
 }
 
+type LoginNavigation = NavigationProp<NavigationsParamList, 'Login'>;
+
 export default function SignUp() {
   const formFields = {
     name: 'name',
@@ -30,7 +31,7 @@ export default function SignUp() {
   };
   const [formData, setFormData] = useState(initialValues);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<LoginNavigation>();
 
   const handleChangeFormData = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });

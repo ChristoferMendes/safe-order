@@ -29,7 +29,7 @@ export function TestForm() {
         name="firstName"
       />
       {errors.firstName && <Text>This is required.</Text>}
-
+      <Text>hi</Text>
       <Controller
         control={control}
         rules={{

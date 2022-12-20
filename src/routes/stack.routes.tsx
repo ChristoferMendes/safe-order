@@ -24,12 +24,12 @@ export function StackNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {hasAuthToken ? (
+      {!hasAuthToken ? (
         <Stack.Screen name="Home" component={Home} />
       ) : (
         <>
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={TestForm} />
+          <Stack.Screen name="SignUp" component={SignUp} />
         </>
       )}
     </Stack.Navigator>
