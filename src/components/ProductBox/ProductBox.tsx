@@ -1,10 +1,13 @@
 import {
-  View, Text, HStack, Image, VStack, ScrollView,
+  View, Text, HStack, Image, VStack, useDisclose,
 } from 'native-base';
+import { ActionSheet } from '../ActionSheet';
 
 export function ProductBox({ item }: { item: string }) {
+  const { isOpen, onToggle } = useDisclose();
+
   return (
-    <HStack mx={10}>
+    <HStack mx={10} onTouchStart={onToggle}>
       <View>
         <Image source={{ uri: item }} size={120} alt="" rounded="full" />
       </View>
@@ -17,6 +20,7 @@ export function ProductBox({ item }: { item: string }) {
           <Text color="gray.300">325 Kcal</Text>
         </HStack>
       </VStack>
+      <ActionSheet isOpen={isOpen} item={item} />
     </HStack>
   );
 }
