@@ -7,9 +7,6 @@ import {
   Box,
   Heading,
   VStack,
-  FormControl,
-  Input,
-  Link,
   HStack,
   Icon,
   Spinner,
@@ -20,11 +17,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api';
 import { RootState } from '../../store';
 import { IUser } from '../Register/Register';
 import { useSuccesToast } from '../../components/SuccessToast';
 import { setToken } from '../../store/modules/token/actions';
+import { Input } from '../../components/Input';
 
 export interface NavigationsParamList {
   Register: undefined
@@ -40,9 +41,17 @@ interface ISessionResponse {
 type SignUpNavigation = NavigationProp<NavigationsParamList, 'Register'>;
 type HomeScreenNavigation = NavigationProp<NavigationsParamList, 'Home'>
 
+interface FormDataProps {
+  email: string;
+  password: string;
+}
+
+const loginSchema: yup.SchemaOf<FormDataProps> = yup.object({
+  email: yup.string().required('Email field is required').email('Email invalid'),
+  password: yup.string().required('Password field is required'),
+});
+
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const navigation = useNavigation<SignUpNavigation | HomeScreenNavigation>();
@@ -50,6 +59,9 @@ export default function Login() {
   const dispatch = useDispatch();
   const user = useSelector<RootState, IUser | null>((state) => state.user);
   const tokenStorageKey = '@storage_token';
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+    resolver: yupResolver(loginSchema),
+  });
 
   const handleNavigateToRegister = useCallback(() => {
     navigation.navigate('Register');
@@ -61,7 +73,7 @@ export default function Login() {
 
   const getToken = async () => await AsyncStorage.getItem(tokenStorageKey);
 
-  const handleUserSignIn = async () => {
+  const handleUserLogin = async ({ email, password }: FormDataProps) => {
     setLoading(true);
     const res = await api.post<ISessionResponse>('/sessions', { email: user?.email ?? email, password });
     const { token } = res.data;
@@ -98,42 +110,31 @@ export default function Login() {
         </Heading>
 
         <VStack space={3} mt="5">
-          <FormControl>
-            <FormControl.Label>Email</FormControl.Label>
-            <Input onChangeText={setEmail} value={user?.email ?? email} placeholder="Email" />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>Password</FormControl.Label>
-            <Input
-              value={password}
-              onChangeText={setPassword}
-              w={{
-                base: '100%',
-                md: '25%',
-              }}
-              type={show ? 'text' : 'password'}
-              InputRightElement={(
-                <Pressable onPress={() => setShow(!show)}>
-                  <Icon as={<MaterialIcons name={show ? 'visibility' : 'visibility-off'} />} size={5} mr={3} />
-                </Pressable>
-              )}
-              placeholder="Password"
-            />
-            <Link
-              _text={{
-                fontSize: 'xs',
-                fontWeight: '500',
-                color: 'indigo.500',
-              }}
-              alignSelf="flex-end"
-              mt="1"
-              href="http"
-            >
-              Forget Password?
-            </Link>
-
-          </FormControl>
-          <Button mt="2" colorScheme="green" onPress={handleUserSignIn}>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange } }) => (
+              <Input label="email" onChangeText={onChange} errorMessage={errors.email?.message} />
+            )}
+          />
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange } }) => (
+              <Input
+                label="password"
+                onChangeText={onChange}
+                errorMessage={errors.password?.message}
+                type={show ? 'text' : 'password'}
+                InputRightElement={(
+                  <Pressable onPress={() => setShow(!show)}>
+                    <Icon as={<MaterialIcons name={show ? 'visibility' : 'visibility-off'} />} size={5} mr={3} />
+                  </Pressable>
+                )}
+              />
+            )}
+          />
+          <Button mt="2" colorScheme="green" onPress={handleSubmit(handleUserLogin)}>
             {loading ? <Spinner color="cyan.500" size="sm" /> : 'Login'}
           </Button>
           <HStack mt="6" justifyContent="center">
