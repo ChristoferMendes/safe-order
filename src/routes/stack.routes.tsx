@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-unstable-nested-components */
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -7,20 +9,21 @@ import { Register } from '../screens/Register';
 import Login from '../screens/Login';
 import { Home } from '../screens/Home';
 import { RootState } from '../store';
-import { Notification } from '../components/Notification';
+import { CustomDrawer } from '../components/CustomDrawer';
+import { Settings } from '../screens/Settings';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export function StackNavigator() {
-  const [hasAuthToken, setHasAuthToken] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const token = useSelector<RootState, string | null>((state) => state.token);
 
   const getTokenFromAsyncStorage = async () => {
     const token = await AsyncStorage.getItem('@storage_token');
-    if (!token) return setHasAuthToken(false);
+    if (!token) return setIsAuthenticated(false);
 
-    return setHasAuthToken(true);
+    return setIsAuthenticated(true);
   };
 
   useEffect(() => {
@@ -30,13 +33,17 @@ export function StackNavigator() {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {hasAuthToken ? (
-        <Drawer.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+      {isAuthenticated ? (
+        <Drawer.Navigator
+          initialRouteName="Home"
+          screenOptions={{ headerShown: false }}
+          drawerContent={(props) => <CustomDrawer {...props} />}
+        >
           <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="Notification" component={Notification} />
+          <Drawer.Screen name="Settings" component={Settings} />
         </Drawer.Navigator>
       ) : (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
         </Stack.Navigator>

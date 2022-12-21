@@ -1,24 +1,22 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, Button } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { View, Text } from 'native-base';
 import { Header } from '../../components/Header';
 import { ImageScroller } from '../../components/ImageScroller';
-import { TestMenu } from '../../components/TestMenu';
-import { Example } from '../../components/TestMenu/TestMenu';
-import { invalidateToken } from '../../store/modules/token/actions';
+import { ProductsList } from '../../components/ProductsList';
 
 export function Home() {
   return (
     <View>
       <Header />
-      <View>
-        <Text>Order the best ones!</Text>
+      <View pt={5} pl={8}>
+        <Text fontWeight="bold" fontSize="xl">Order the best ones!</Text>
       </View>
       <View>
         <ImageScroller />
       </View>
-      <View />
+      <View>
+        <Text>Filters</Text>
+      </View>
+      <ProductsList />
     </View>
   );
 }
