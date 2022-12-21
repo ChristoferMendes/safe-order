@@ -28,7 +28,6 @@ export function CustomDrawer(props: DrawerContentComponentProps) {
     return icons[keyName];
   };
 
-  console.log(props);
   return (
     <DrawerContentScrollView {...props}>
       <VStack space={6}>
