@@ -8,11 +8,15 @@ export function ProductBox({ item }: { item: string }) {
   const {
     isOpen, onOpen, onClose,
   } = useDisclose();
-  console.log(isOpen);
+
+  const handleOpenActionSheet = () => {
+    if (isOpen) return;
+    onOpen();
+  };
 
   return (
     <TouchableWithoutFeedback>
-      <HStack mx={10} onTouchEnd={onOpen}>
+      <HStack mx={10} onTouchEnd={handleOpenActionSheet}>
         <View>
           <Image source={{ uri: item }} size={120} alt="" rounded="full" />
         </View>

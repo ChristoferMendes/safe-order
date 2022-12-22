@@ -1,5 +1,5 @@
 import {
-  Actionsheet as NativeBaseActionSheet, Container, Text, View,
+  Actionsheet as NativeBaseActionSheet,
 } from 'native-base';
 import { ActionSheetNutrientBox } from './ActionSheetNutrientBox';
 import { ProductImage } from '../ProductImage';
@@ -40,7 +40,7 @@ export function ActionSheet({ isOpen, item, onClose }: IActionSheetProps) {
         </NativeBaseActionSheet.Item>
         <NativeBaseActionSheet.Item alignItems="center">
           <ActionSheetButtonBox>
-            <ActionSheetButtonBox.QuantityButton label="1" />
+            <ActionSheetButtonBox.QuantityButton />
             <ActionSheetButtonBox.PriceButton label="Add to cart" price={47} />
           </ActionSheetButtonBox>
         </NativeBaseActionSheet.Item>
