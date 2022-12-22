@@ -1,4 +1,5 @@
 import { View, FlatList, ScrollView } from 'native-base';
+import { TouchableWithoutFeedback } from 'react-native';
 import { ProductBox } from '../ProductBox';
 
 export function ProductsList() {
@@ -16,19 +17,23 @@ export function ProductsList() {
 
   const renderItem = ({ item }: { item: string }) => (
     <View mb={10}>
-      <ProductBox item={item} />
+      <TouchableWithoutFeedback>
+        <ProductBox item={item} />
+      </TouchableWithoutFeedback>
     </View>
   );
 
   return (
     <View mt="12">
       <ScrollView horizontal>
-        <FlatList
-          data={images}
-          renderItem={renderItem}
-          height={600}
-          nestedScrollEnabled
-        />
+        <TouchableWithoutFeedback>
+          <FlatList
+            data={images}
+            renderItem={renderItem}
+            height={600}
+            nestedScrollEnabled
+          />
+        </TouchableWithoutFeedback>
       </ScrollView>
     </View>
   );

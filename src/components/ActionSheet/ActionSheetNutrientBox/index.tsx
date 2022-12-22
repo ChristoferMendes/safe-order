@@ -19,8 +19,8 @@ function Main({ children }: { children: ReactNode }) {
       h="20"
       borderRadius="xl"
       alignItems="center"
-      w="xs"
       p="3"
+      w="xs"
     >
       {children}
     </HStack>
@@ -30,7 +30,7 @@ function Main({ children }: { children: ReactNode }) {
 function Item({ value, nutrient }: IActionSheetProductBox) {
   return (
     <Box>
-      <Text fontWeight="bold" textAlign="center">{value}</Text>
+      <Text fontWeight="bold" textAlign="center" fontSize="xl">{value}</Text>
       <Text color="warmGray.400">{nutrient}</Text>
     </Box>
   );
