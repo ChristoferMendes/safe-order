@@ -6,3 +6,10 @@ export function increaseQuantity(quantity: number) {
     payload: quantity,
   };
 }
+
+export function setFinalPrice(price: number) {
+  return {
+    type: ActionTypes.setFinalPrice,
+    payload: price,
+  };
+}

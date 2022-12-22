@@ -6,10 +6,11 @@ import { ProductImage } from '../ProductImage';
 import { ActionSheetSummary } from './ActionSheetSummary';
 import { ActionSheetDescription } from './ActionSheetDescription';
 import { ActionSheetButtonBox } from './ActionSheetButtonBox';
+import { IProduct } from '../ProductsList/types';
 
 interface IActionSheetProps {
   isOpen: boolean;
-  item: string;
+  item: IProduct
   onClose: () => void
 }
 
@@ -18,7 +19,7 @@ export function ActionSheet({ isOpen, item, onClose }: IActionSheetProps) {
     <NativeBaseActionSheet isOpen={isOpen} onClose={onClose}>
       <NativeBaseActionSheet.Content>
         <NativeBaseActionSheet.Item alignItems="center">
-          <ProductImage imageLink={item} />
+          <ProductImage imageLink={item.image} />
         </NativeBaseActionSheet.Item>
         <NativeBaseActionSheet.Item>
           <ActionSheetSummary label="Vegetables with some fruits" />
@@ -41,7 +42,7 @@ export function ActionSheet({ isOpen, item, onClose }: IActionSheetProps) {
         <NativeBaseActionSheet.Item alignItems="center">
           <ActionSheetButtonBox>
             <ActionSheetButtonBox.QuantityButton />
-            <ActionSheetButtonBox.PriceButton label="Add to cart" price={47} />
+            <ActionSheetButtonBox.PriceButton label="Add to cart" price={47} productUUID={item.uuid} />
           </ActionSheetButtonBox>
         </NativeBaseActionSheet.Item>
       </NativeBaseActionSheet.Content>

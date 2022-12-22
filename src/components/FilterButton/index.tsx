@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'native-base';
+import { Text, Button } from 'native-base';
 
 export function FilterButton({ item }: { item: string }) {
   return (

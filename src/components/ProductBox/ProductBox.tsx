@@ -3,8 +3,9 @@ import {
 } from 'native-base';
 import { TouchableWithoutFeedback } from 'react-native';
 import { ActionSheet } from '../ActionSheet';
+import { IProduct } from '../ProductsList/types';
 
-export function ProductBox({ item }: { item: string }) {
+export function ProductBox({ item }: { item: IProduct }) {
   const {
     isOpen, onOpen, onClose,
   } = useDisclose();
@@ -18,7 +19,7 @@ export function ProductBox({ item }: { item: string }) {
     <TouchableWithoutFeedback>
       <HStack mx={10} onTouchEnd={handleOpenActionSheet}>
         <View>
-          <Image source={{ uri: item }} size={120} alt="" rounded="full" />
+          <Image source={{ uri: item.image }} size={120} alt="" rounded="full" />
         </View>
         <VStack justifyContent="center" space={3}>
           <View>

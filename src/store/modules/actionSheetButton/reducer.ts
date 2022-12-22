@@ -1,11 +1,12 @@
 import { ActionTypes } from './types';
 
-type State = number;
-const initialState = 1 as State;
+const initialState = {
+  quantity: 1,
+};
 
 interface Action {
   type: string;
-  payload: number
+  payload: number[] | undefined
 }
 /* eslint-disable no-case-declarations */
 export default function actionSheetButton(state = initialState, action: Action) {
@@ -13,7 +14,7 @@ export default function actionSheetButton(state = initialState, action: Action) 
     case ActionTypes.increaseQuantity:
       const quantity = action.payload;
 
-      return quantity;
+      return { ...state, quantity };
     default:
       return state;
   }

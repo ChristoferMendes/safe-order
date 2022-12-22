@@ -11,6 +11,7 @@ import { Home } from '../screens/Home';
 import { RootState } from '../store';
 import { CustomDrawer } from '../components/CustomDrawer';
 import { Settings } from '../screens/Settings';
+import { Chart } from '../components/Chart';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -41,6 +42,7 @@ export function StackNavigator() {
         >
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Settings" component={Settings} />
+          <Drawer.Screen name="Chart" component={Chart} />
         </Drawer.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>

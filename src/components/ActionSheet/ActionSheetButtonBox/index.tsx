@@ -7,7 +7,9 @@ import {
 import { ReactNode, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
-import { increaseQuantity } from '../../../store/modules/actionSheetButton/actions';
+import { increaseQuantity, setFinalPrice } from '../../../store/modules/actionSheetButton/actions';
+
+type State = { quantity: number };
 
 function Main({ children }: { children: ReactNode }) {
   return (
@@ -39,22 +41,23 @@ function QuantityButton() {
   }, [quantity]);
 
   return (
-    <Button rounded="xl" w="40" h="16" bgColor="gray.100">
-      <HStack
-        w="32"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Icon as={MaterialIcons} name="remove" size="2xl" color="gray.400" onPress={handleSubtract} />
-        <Text fontSize="xl">{quantity}</Text>
-        <Icon as={MaterialIcons} name="add" size="2xl" color="gray.500" onPress={handleAdd} />
-      </HStack>
-    </Button>
+    <HStack rounded="xl" w="40" h="16" bgColor="gray.100" alignItems="center" justifyContent="space-around">
+      <Button onPress={handleSubtract} variant="ghost" _pressed={{ bgColor: 'red.100' }}>
+        <Icon as={MaterialIcons} name="remove" size="2xl" color="gray.400" />
+      </Button>
+      <Text fontSize="xl">{quantity}</Text>
+      <Button onPress={handleAdd} variant="ghost" _pressed={{ bgColor: 'success.100' }}>
+        <Icon as={MaterialIcons} name="add" size="2xl" color="gray.500" />
+      </Button>
+    </HStack>
   );
 }
 
-function PriceButton({ label, price }: { label: string, price: number }) {
-  const quantity = useSelector<RootState, number>((state) => state.actionSheetButton);
+function PriceButton({ label, price, productUUID }:
+  { label: string, price: number, productUUID: string }) {
+  const { quantity } = useSelector<RootState, State>((state) => state.actionSheetButton);
+  const dispatch = useDispatch();
+
   const lang = 'en-US';
   const currency = 'USD';
 
@@ -70,8 +73,12 @@ function PriceButton({ label, price }: { label: string, price: number }) {
   const pricePlusQuantity = price * quantity;
   const result = currencyConverter(pricePlusQuantity);
 
+  const handleAddToCart = () => {
+
+  };
+
   return (
-    <Button rounded="xl" w="40" h="16" bgColor="black">
+    <Button rounded="xl" w="40" h="16" bgColor="black" onTouchEnd={handleAddToCart}>
       <Text color="white" fontWeight="semibold">{`${label}  ${result}`}</Text>
     </Button>
   );

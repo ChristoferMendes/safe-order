@@ -1,6 +1,4 @@
-import {
-  View, Text, Box, FlatList, HStack, VStack,
-} from 'native-base';
+import { FlatList } from 'native-base';
 import { FilterButton } from '../FilterButton';
 
 export function Filters() {
