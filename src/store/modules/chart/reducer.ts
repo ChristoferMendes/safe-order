@@ -8,22 +8,27 @@ interface IProduct {
   quantity: number;
 }
 
-interface State {
-  product: IProduct | null
-}
-const initialState = {} as State;
+const initialState = {
+  products: [] as IProduct[] | [],
+};
 
 interface Action {
   type: string;
-  payload: IProduct
+  payload: {
+    product: IProduct,
+    resultPrice: number;
+  }
 }
 
 export default function chart(state = initialState, action: Action) {
   switch (action.type) {
     case ActionTypes.storeProductInChart:
-      const products = action.payload;
+      const { product, resultPrice } = action.payload;
+      const finalProduct = { ...product, price: resultPrice } as typeof product;
+      console.log('calleddd', finalProduct);
+      // const newState = [...state.products, product];
 
-      return { ...state, ...products };
+      return { ...state, products: [product] } as typeof initialState;
 
     default:
       return state;

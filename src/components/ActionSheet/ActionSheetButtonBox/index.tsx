@@ -8,6 +8,8 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { increaseQuantity, setFinalPrice } from '../../../store/modules/actionSheetButton/actions';
+import { storeProductInChart } from '../../../store/modules/chart/actions';
+import { IProduct } from '../../ProductsList/types';
 
 type State = { quantity: number };
 
@@ -53,9 +55,10 @@ function QuantityButton() {
   );
 }
 
-function PriceButton({ label, price, productUUID }:
-  { label: string, price: number, productUUID: string }) {
+function PriceButton({ label, price, product }:
+  { label: string, price: number, product: IProduct }) {
   const { quantity } = useSelector<RootState, State>((state) => state.actionSheetButton);
+  const a = useSelector<RootState>((state) => state.chart);
   const dispatch = useDispatch();
 
   const lang = 'en-US';
@@ -74,12 +77,15 @@ function PriceButton({ label, price, productUUID }:
   const result = currencyConverter(pricePlusQuantity);
 
   const handleAddToCart = () => {
-
+    console.log('entered');
+    dispatch(storeProductInChart(product, pricePlusQuantity));
   };
 
+  console.log('STATE:, ', a);
+
   return (
-    <Button rounded="xl" w="40" h="16" bgColor="black" onTouchEnd={handleAddToCart}>
-      <Text color="white" fontWeight="semibold">{`${label}  ${result}`}</Text>
+    <Button rounded="xl" w="40" h="16" bgColor="black">
+      <Text onPress={handleAddToCart} color="white" fontWeight="semibold">{`${label}  ${result}`}</Text>
     </Button>
   );
 }
