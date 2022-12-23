@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import {
-  Center, Box, Heading, VStack, Button, Pressable, Icon,
+  Center, Box, Heading, VStack, Button, Pressable, Icon, Spinner,
 } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,15 +13,12 @@ import { api } from '../../services/api';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { useSuccesToast } from '../../components/SuccessToast';
 import { NavigationsParamList } from '../Login/Login';
+import { useAxios } from '../../hooks/useAxios/useAxios';
 
 export interface IUser {
-  uuid: string;
-  label: string;
+  name: string;
   email: string;
-  avatar: string;
-  created_at: Date;
-  updated_at: Date;
-  avatar_url: string | null
+  password: string;
 }
 
 type LoginNavigation = NavigationProp<NavigationsParamList, 'Login'>;
@@ -49,17 +46,21 @@ export default function Register() {
   const dispatch = useDispatch();
   const navigation = useNavigation<LoginNavigation>();
   const showToast = useSuccesToast({ message: 'Signed up with success' });
+  const { executeAxios, loading } = useAxios<FormDataProps>({ endpoint: '/users', method: 'POST' });
 
   const handleRedirect = () => {
     navigation.navigate('Login');
   };
 
   const handleSignUp = async (data: FormDataProps) => {
-    const res = await api.post<IUser>('/users', data);
+    const res = await executeAxios({ payload: data });
+    if (!res) return;
     dispatch(storeUserInfo(res.data));
     showToast();
     handleRedirect();
   };
+
+  console.log(loading);
 
   return (
     <Center w="100%" h="100%">
@@ -129,7 +130,7 @@ export default function Register() {
             )}
           />
           <Button mt="2" colorScheme="indigo" onPress={handleSubmit(handleSignUp)}>
-            Sign up
+            {loading ? <Spinner color="cyan.500" size="sm" /> : 'Sign Up'}
           </Button>
         </VStack>
       </Box>

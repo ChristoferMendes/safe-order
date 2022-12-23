@@ -4,7 +4,7 @@ import { IProduct } from '../../components/ProductsList/types';
 import { RootState } from '../../store';
 import type { IChart } from '../../store/modules/chart/interfaces';
 
-export function Chart() {
+export function ShoppingCart() {
   const chart = useSelector<RootState, IChart>((state) => state.chart);
   // console.log('CHART: ', products);
   return (
