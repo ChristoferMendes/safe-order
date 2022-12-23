@@ -11,7 +11,7 @@ import { Home } from '../screens/Home';
 import { RootState } from '../store';
 import { CustomDrawer } from '../components/CustomDrawer';
 import { Settings } from '../screens/Settings';
-import { Chart } from '../components/Chart';
+import { Chart } from '../screens/Chart';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

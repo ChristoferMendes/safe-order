@@ -8,10 +8,17 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { increaseQuantity, setFinalPrice } from '../../../store/modules/actionSheetButton/actions';
-import { storeProductInChart } from '../../../store/modules/chart/actions';
+import { storeProductInChart, updateProductInChart } from '../../../store/modules/chart/actions';
 import { IProduct } from '../../ProductsList/types';
+import { IChart } from '../../../store/modules/chart/interfaces';
 
-type State = { quantity: number };
+interface Product {
+  uuid: string;
+  image: string;
+  quantity: number;
+}
+type ButtonState = { quantity: number };
+type ChartState = { products: Product[] }
 
 function Main({ children }: { children: ReactNode }) {
   return (
@@ -26,9 +33,11 @@ function Main({ children }: { children: ReactNode }) {
   );
 }
 
-function QuantityButton() {
+function QuantityButton({ productUuid }: { productUuid: string }) {
   const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(1);
+  const chart = useSelector<RootState, ChartState>((state) => state.chart);
+  const findProduct = chart?.products.find((item) => item.uuid.match(productUuid));
+  const [quantity, setQuantity] = useState(findProduct?.quantity ?? 1);
 
   const handleAdd = () => {
     setQuantity(quantity + 1);
@@ -55,10 +64,9 @@ function QuantityButton() {
   );
 }
 
-function PriceButton({ label, price, product }:
-  { label: string, price: number, product: IProduct }) {
-  const { quantity } = useSelector<RootState, State>((state) => state.actionSheetButton);
-  const a = useSelector<RootState>((state) => state.chart);
+function PriceButton({ product }: { product: IProduct }) {
+  const { quantity } = useSelector<RootState, ButtonState>((state) => state.actionSheetButton);
+  const chart = useSelector<RootState, IChart>((state) => state.chart);
   const dispatch = useDispatch();
 
   const lang = 'en-US';
@@ -73,19 +81,25 @@ function PriceButton({ label, price, product }:
     return currencyToBeFormated.format(value);
   };
 
-  const pricePlusQuantity = price * quantity;
+  const pricePlusQuantity = product.price * quantity;
   const result = currencyConverter(pricePlusQuantity);
 
   const handleAddToCart = () => {
-    console.log('entered');
-    dispatch(storeProductInChart(product, pricePlusQuantity));
+    const productExist = chart?.products.some((item) => item.uuid === product.uuid);
+    if (!productExist) {
+      return dispatch(storeProductInChart(product, quantity));
+    }
+
+    return dispatch(updateProductInChart(product, quantity));
   };
 
-  console.log('STATE:, ', a);
+  // useEffect(() => {
+
+  // }, [])
 
   return (
     <Button rounded="xl" w="40" h="16" bgColor="black">
-      <Text onPress={handleAddToCart} color="white" fontWeight="semibold">{`${label}  ${result}`}</Text>
+      <Text onPress={handleAddToCart} color="white" fontWeight="semibold">{`Add to cart ${result}`}</Text>
     </Button>
   );
 }
