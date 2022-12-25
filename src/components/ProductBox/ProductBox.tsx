@@ -5,7 +5,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { ActionSheet } from '../ActionSheet';
 import { IProduct } from '../ProductsList/types';
 
-export function ProductBox({ item }: { item: IProduct }) {
+export function ProductBox({ product }: { product: IProduct }) {
   const {
     isOpen, onOpen, onClose,
   } = useDisclose();
@@ -19,7 +19,7 @@ export function ProductBox({ item }: { item: IProduct }) {
     <TouchableWithoutFeedback>
       <HStack mx={10} onTouchEnd={handleOpenActionSheet}>
         <View>
-          <Image source={{ uri: item.image }} size={120} alt="" rounded="full" />
+          <Image source={{ uri: product.image }} size={120} alt="" rounded="full" />
         </View>
         <VStack justifyContent="center" space={3}>
           <View>
@@ -30,7 +30,7 @@ export function ProductBox({ item }: { item: IProduct }) {
             <Text color="gray.300">325 Kcal</Text>
           </HStack>
         </VStack>
-        <ActionSheet isOpen={isOpen} item={item} onClose={onClose} />
+        <ActionSheet isOpen={isOpen} product={product} onClose={onClose} />
       </HStack>
     </TouchableWithoutFeedback>
   );

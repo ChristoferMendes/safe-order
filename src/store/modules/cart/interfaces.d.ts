@@ -2,8 +2,9 @@ interface ICartProduct {
   uuid: string;
   image: string;
   quantity: number;
+  quantityRequested: number;
 }
 
-export interface IChart {
+export interface ICart {
   products: ICartProduct[]
 }

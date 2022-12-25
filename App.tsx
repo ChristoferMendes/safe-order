@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Home from './src/screens/Login';
 import { store } from './src/store';
-import { StackNavigator } from './src/routes/stack.routes';
+import { StackNavigator } from './src/routes/routes';
 
 const config = {
   dependencies: {

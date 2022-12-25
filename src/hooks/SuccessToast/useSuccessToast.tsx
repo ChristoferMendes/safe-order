@@ -2,10 +2,10 @@ import {
   Box, useToast, Text,
 } from 'native-base';
 
-export function useSuccesToast({ message }: { message: string }) {
+export function useSuccesToast() {
   const toast = useToast();
 
-  const showToast = () => {
+  const showToast = ({ message = '' }) => {
     toast.show({
       render: () => (
         <Box bg="green.400" px="7" py="4" rounded="xl" mb={5}>

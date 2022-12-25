@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Input } from '../../components/Input';
 import { api } from '../../services/api';
 import { storeUserInfo } from '../../store/modules/users/actions';
-import { useSuccesToast } from '../../components/SuccessToast';
+import { useSuccesToast } from '../../hooks/SuccessToast';
 import { NavigationsParamList } from '../Login/Login';
 import { useAxios } from '../../hooks/useAxios/useAxios';
 
@@ -45,7 +45,7 @@ export default function Register() {
   });
   const dispatch = useDispatch();
   const navigation = useNavigation<LoginNavigation>();
-  const showToast = useSuccesToast({ message: 'Signed up with success' });
+  const showToast = useSuccesToast();
   const { executeAxios, loading } = useAxios<FormDataProps>({ endpoint: '/users', method: 'POST' });
 
   const handleRedirect = () => {
@@ -56,7 +56,7 @@ export default function Register() {
     const res = await executeAxios({ payload: data });
     if (!res) return;
     dispatch(storeUserInfo(res.data));
-    showToast();
+    showToast({ message: 'Signed up with success' });
     handleRedirect();
   };
 

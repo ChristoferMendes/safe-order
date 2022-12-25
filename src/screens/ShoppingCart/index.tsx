@@ -1,21 +1,24 @@
-import { View, Text } from 'native-base';
+import {
+  View, Text, FlatList, Image, HStack,
+} from 'native-base';
 import { useSelector } from 'react-redux';
-import { IProduct } from '../../components/ProductsList/types';
 import { RootState } from '../../store';
-import type { IChart } from '../../store/modules/chart/interfaces';
+import type { ICart } from '../../store/modules/cart/interfaces';
 
 export function ShoppingCart() {
-  const chart = useSelector<RootState, IChart>((state) => state.chart);
-  // console.log('CHART: ', products);
+  const cart = useSelector<RootState, ICart>((state) => state.cart);
+  console.log('aaaaa', cart.products);
   return (
     <View>
-      {chart?.products.map((item) => (
-        <Text key={item.uuid}>
-          Price:
-          {' '}
-          {item.quantity}
-        </Text>
-      ))}
+      <FlatList
+        data={cart.products}
+        renderItem={({ item }) => (
+          <HStack>
+            <Image source={{ uri: item.image }} size={120} alt="" />
+            <Text>{item.quantityRequested}</Text>
+          </HStack>
+        )}
+      />
     </View>
   );
 }

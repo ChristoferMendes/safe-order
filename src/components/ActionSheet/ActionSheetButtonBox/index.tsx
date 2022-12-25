@@ -2,23 +2,19 @@ import 'intl';
 import 'intl/locale-data/jsonp/en';
 import { MaterialIcons } from '@expo/vector-icons';
 import {
-  Text, HStack, Button, Icon,
+  Text, HStack, Button, Icon, useToast, Box,
 } from 'native-base';
 import { ReactNode, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
-import { increaseQuantity, setFinalPrice } from '../../../store/modules/actionSheetButton/actions';
-import { storeProductInChart, updateProductInChart } from '../../../store/modules/chart/actions';
+import { increaseQuantity } from '../../../store/modules/actionSheetButton/actions';
+import { removeProductInCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/actions';
 import { IProduct } from '../../ProductsList/types';
-import { IChart } from '../../../store/modules/chart/interfaces';
+import { ICart } from '../../../store/modules/cart/interfaces';
+import { useSuccesToast } from '../../../hooks/SuccessToast';
 
-interface Product {
-  uuid: string;
-  image: string;
-  quantity: number;
-}
 type ButtonState = { quantity: number };
-type ChartState = { products: Product[] }
+type Cart = { products: IProduct[] }
 
 function Main({ children }: { children: ReactNode }) {
   return (
@@ -35,19 +31,24 @@ function Main({ children }: { children: ReactNode }) {
 
 function QuantityButton({ productUuid }: { productUuid: string }) {
   const dispatch = useDispatch();
-  const chart = useSelector<RootState, ChartState>((state) => state.chart);
-  const findProduct = chart?.products.find((item) => item.uuid.match(productUuid));
-  const [quantity, setQuantity] = useState(findProduct?.quantity ?? 1);
+  const cart = useSelector<RootState, Cart>((state) => state.cart);
+  const productExists = cart?.products.find((item) => item.uuid.match(productUuid));
+  const [quantity, setQuantity] = useState(productExists?.quantityRequested ?? 1);
 
   const handleAdd = () => {
     setQuantity(quantity + 1);
   };
 
   const handleSubtract = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+    if (quantity > 0) setQuantity(quantity - 1);
   };
 
   useEffect(() => {
+    if (quantity === 0) {
+      dispatch(removeProductInCart(productUuid));
+      return;
+    }
+
     dispatch(increaseQuantity(quantity));
   }, [quantity]);
 
@@ -66,40 +67,69 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
 
 function PriceButton({ product }: { product: IProduct }) {
   const { quantity } = useSelector<RootState, ButtonState>((state) => state.actionSheetButton);
-  const chart = useSelector<RootState, IChart>((state) => state.chart);
+  const cart = useSelector<RootState, ICart>((state) => state.cart);
+  console.log('STATE', cart);
   const dispatch = useDispatch();
-
-  const lang = 'en-US';
-  const currency = 'USD';
+  const toast = useToast();
 
   const currencyConverter = (value: number) => {
+    const lang = 'en-US';
+    const style = 'currency';
+    const currency = 'USD';
+
     const currencyToBeFormated = new Intl.NumberFormat(lang, {
-      style: 'currency',
+      style,
       currency,
     });
 
     return currencyToBeFormated.format(value);
   };
 
-  const pricePlusQuantity = product.price * quantity;
-  const result = currencyConverter(pricePlusQuantity);
+  const priceTimesQuantity = product.price * quantity;
+  const result = currencyConverter(priceTimesQuantity);
 
-  const handleAddToCart = () => {
-    const productExist = chart?.products.some((item) => item.uuid === product.uuid);
-    if (!productExist) {
-      return dispatch(storeProductInChart(product, quantity));
-    }
+  const showToast = () => {
+    const durationInMiliseconds = 1000;
+    const message = `Product ${product.uuid} added to your cart`;
 
-    return dispatch(updateProductInChart(product, quantity));
+    return toast.show({
+      placement: 'top',
+      duration: durationInMiliseconds,
+      accessibilityAnnouncement: message,
+      render: () => (
+        <Box bg="green.400" px="7" py="4" rounded="xl" mb={5}>
+          <Text color="white">
+            {message}
+          </Text>
+        </Box>
+      ),
+    });
   };
 
-  // useEffect(() => {
+  const handleAddToCart = () => {
+    const productExist = cart?.products.some((item) => item.uuid === product.uuid);
+    if (!productExist) {
+      return dispatch(storeProductInCart(product, quantity));
+    }
 
-  // }, [])
+    showToast();
+    return dispatch(updateProductInCart(product, quantity));
+  };
+
+  const buttonLabel = `Add to cart ${result}`;
 
   return (
-    <Button rounded="xl" w="40" h="16" bgColor="black">
-      <Text onPress={handleAddToCart} color="white" fontWeight="semibold">{`Add to cart ${result}`}</Text>
+    <Button
+      rounded="xl"
+      w="40"
+      h="16"
+      bgColor="gray.900"
+      _pressed={{
+        backgroundColor: 'gray.700',
+      }}
+      onPress={handleAddToCart}
+    >
+      {buttonLabel}
     </Button>
   );
 }

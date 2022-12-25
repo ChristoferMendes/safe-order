@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 import user from './users/reducer';
 import token from './token/reducer';
 import actionSheetButton from './actionSheetButton/reducer';
-import chart from './chart/reducer';
 import product from './products/reducer';
+import cart from './cart/reducer';
 
 export default combineReducers({
-  user, token, actionSheetButton, chart, product,
+  user, token, actionSheetButton, cart, product,
 });

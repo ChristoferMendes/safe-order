@@ -23,7 +23,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api';
 import { RootState } from '../../store';
 import { IUser } from '../Register/Register';
-import { useSuccesToast } from '../../components/SuccessToast';
+import { useSuccesToast } from '../../hooks/SuccessToast';
 import { setToken } from '../../store/modules/token/actions';
 import { Input } from '../../components/Input';
 
@@ -55,7 +55,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const navigation = useNavigation<SignUpNavigation | HomeScreenNavigation>();
-  const showToast = useSuccesToast({ message: 'Logged in with success' });
+  const showToast = useSuccesToast();
   const dispatch = useDispatch();
   const user = useSelector<RootState, IUser | null>((state) => state.user);
   const tokenStorageKey = '@storage_token';
@@ -80,7 +80,7 @@ export default function Login() {
     await storeUserToken(token);
     const tokenFromStorage = await getToken();
     dispatch(setToken(tokenFromStorage));
-    showToast();
+    showToast({ message: 'Logged in with success' });
     setLoading(false);
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -5,6 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Icon, Text, View } from 'native-base';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Register } from '../screens/Register';
 import Login from '../screens/Login';
 import { Home } from '../screens/Home';
@@ -12,9 +16,10 @@ import { RootState } from '../store';
 import { CustomDrawer } from '../components/CustomDrawer';
 import { Settings } from '../screens/Settings';
 import { ShoppingCart } from '../screens/ShoppingCart';
+import { ICart } from '../store/modules/cart/interfaces';
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 export function StackNavigator() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,18 +37,50 @@ export function StackNavigator() {
   }, [token]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {isAuthenticated ? (
-        <Drawer.Navigator
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarActiveTintColor: 'blue.500',
+            tabBarLabelStyle: {
+              backgroundColor: 'red.200',
+            },
+            tabBarStyle: {
+              height: 60,
+            },
+            tabBarShowLabel: false,
+          }}
           initialRouteName="Home"
-          screenOptions={{ headerShown: false }}
-          drawerContent={(props) => <CustomDrawer {...props} />}
         >
-          <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="Settings" component={Settings} />
-          <Drawer.Screen name="ShoppingCart" component={ShoppingCart} />
-        </Drawer.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarIcon: ({ size, color }) => (
+                <Icon size={size} color={color} as={MaterialIcons} name="home" />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Cart"
+            component={ShoppingCart}
+            options={{
+              tabBarIcon: ({ size, color }) => (
+                <Icon size={size} color={color} as={MaterialIcons} name="shopping-cart" />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              tabBarIcon: ({ size, color }) => (
+                <Icon size={size} color={color} as={MaterialIcons} name="settings" />
+              ),
+            }}
+          />
+        </Tab.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
