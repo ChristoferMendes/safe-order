@@ -1,4 +1,4 @@
-type Endpoints = '/products' | '/users' | '/customers' | '/orders'
+type Endpoints = '/products' | '/users' | '/customers' | '/orders' | '/me'
 type Methods = 'POST' | 'DELETE' | 'PUT'
 
 export interface IUseAxios {

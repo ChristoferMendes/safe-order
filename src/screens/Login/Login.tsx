@@ -61,12 +61,12 @@ const loginSchema: yup.SchemaOf<FormDataProps> = yup.object({
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
-  const navigation = useNavigation<SignUpNavigation | HomeScreenNavigation>();
+  const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation<SignUpNavigation>();
   const showToast = useSuccesToast();
   const dispatch = useDispatch();
-  const user = useSelector<RootState, IUser | null>((state) => state.user);
   const tokenStorageKey = '@storage_token';
+  const user = useSelector<RootState, IUser | null>((state) => state.user);
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(loginSchema),
   });
@@ -138,10 +138,10 @@ export default function Login() {
                 label="password"
                 onChangeText={onChange}
                 errorMessage={errors.password?.message}
-                type={show ? 'text' : 'password'}
+                type={showPassword ? 'text' : 'password'}
                 InputRightElement={(
-                  <Pressable onPress={() => setShow(!show)}>
-                    <Icon as={<MaterialIcons name={show ? 'visibility' : 'visibility-off'} />} size={5} mr={3} />
+                  <Pressable onPress={() => setShowPassword(!showPassword)}>
+                    <Icon as={<MaterialIcons name={showPassword ? 'visibility' : 'visibility-off'} />} size={5} mr={3} />
                   </Pressable>
                 )}
               />
