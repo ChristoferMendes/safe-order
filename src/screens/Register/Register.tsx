@@ -60,8 +60,6 @@ export default function Register() {
     handleRedirect();
   };
 
-  console.log(loading);
-
   return (
     <Center w="100%" h="100%">
       <Box safeArea p="2" w="90%" maxW="290" py="8">

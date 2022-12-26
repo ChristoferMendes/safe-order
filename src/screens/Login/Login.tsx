@@ -75,12 +75,16 @@ export default function Login() {
 
   const handleUserLogin = async ({ email, password }: FormDataProps) => {
     setLoading(true);
-    const res = await api.post<ISessionResponse>('/sessions', { email: user?.email ?? email, password });
-    const { token } = res.data;
-    await storeUserToken(token);
-    const tokenFromStorage = await getToken();
-    dispatch(setToken(tokenFromStorage));
-    showToast({ message: 'Logged in with success' });
+    try {
+      const res = await api.post<ISessionResponse>('/sessions', { email: user?.email ?? email, password });
+      const { token } = res.data;
+      await storeUserToken(token);
+      const tokenFromStorage = await getToken();
+      dispatch(setToken(tokenFromStorage));
+      showToast({ message: 'Logged in with success' });
+    } catch (e) {
+      console.log(e);
+    }
     setLoading(false);
   };
 
