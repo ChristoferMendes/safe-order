@@ -7,7 +7,6 @@ import type { ICart } from '../../store/modules/cart/interfaces';
 
 export function ShoppingCart() {
   const cart = useSelector<RootState, ICart>((state) => state.cart);
-  console.log('aaaaa', cart.products);
   return (
     <View>
       <FlatList

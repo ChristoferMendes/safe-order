@@ -26,6 +26,7 @@ import { IUser } from '../Register/Register';
 import { useSuccesToast } from '../../hooks/SuccessToast';
 import { setToken } from '../../store/modules/token/actions';
 import { Input } from '../../components/Input';
+import { storeUserInfo } from '../../store/modules/users/actions';
 
 export interface NavigationsParamList {
   Register: undefined
@@ -36,6 +37,13 @@ export interface NavigationsParamList {
 interface ISessionResponse {
   message: string
   token: string
+  user: {
+    uuid: string;
+    name: string;
+    email: string;
+    avatar: string | null;
+    avatar_url: string | null;
+  }
 }
 
 type SignUpNavigation = NavigationProp<NavigationsParamList, 'Register'>;
@@ -77,7 +85,8 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await api.post<ISessionResponse>('/sessions', { email: user?.email ?? email, password });
-      const { token } = res.data;
+      const { token, user: userData } = res.data;
+      dispatch(storeUserInfo(userData));
       await storeUserToken(token);
       const tokenFromStorage = await getToken();
       dispatch(setToken(tokenFromStorage));

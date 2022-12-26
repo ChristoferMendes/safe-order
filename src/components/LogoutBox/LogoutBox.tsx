@@ -1,3 +1,4 @@
+import { URI } from 'react-native-dotenv';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -6,9 +7,13 @@ import {
   Button as NativeBaseButton,
   AlertDialog as NativeBaseAlertDialog,
   useDisclose,
+  Text,
+  Image,
 } from 'native-base';
 import { ReactNode, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { IUser } from '../../screens/Register/Register';
+import { RootState } from '../../store';
 import { invalidateToken } from '../../store/modules/token/actions';
 import { LoadingSpinner } from '../LoadingSpinner';
 import { IAlertDialog } from './ILogoutBox';
@@ -32,8 +37,18 @@ function Main({ children }: { children: ReactNode }) {
 }
 
 function Icon() {
+  const user = useSelector<RootState, IUser | null>((state) => state.user);
+  const imageUrl = user?.avatar_url?.replace('http://localhost:3333', URI);
+
   return (
-    <NativeBaseIcon as={MaterialIcons} name="account-circle" size="3xl" />
+    <HStack alignItems="center" space={2}>
+      {imageUrl ? (
+        <Image source={{ uri: imageUrl }} alt="" size="10" rounded="full" />
+      ) : (
+        <NativeBaseIcon as={MaterialIcons} name="account-circle" size="3xl" />
+      )}
+      <Text>{user?.name}</Text>
+    </HStack>
   );
 }
 

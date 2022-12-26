@@ -9,16 +9,17 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Input } from '../../components/Input';
-import { api } from '../../services/api';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { useSuccesToast } from '../../hooks/SuccessToast';
 import { NavigationsParamList } from '../Login/Login';
 import { useAxios } from '../../hooks/useAxios/useAxios';
 
 export interface IUser {
+  uuid: string;
   name: string;
   email: string;
-  password: string;
+  avatar: string | null;
+  avatar_url: string | null;
 }
 
 type LoginNavigation = NavigationProp<NavigationsParamList, 'Login'>;
@@ -46,7 +47,7 @@ export default function Register() {
   const dispatch = useDispatch();
   const navigation = useNavigation<LoginNavigation>();
   const showToast = useSuccesToast();
-  const { executeAxios, loading } = useAxios<FormDataProps>({ endpoint: '/users', method: 'POST' });
+  const { executeAxios, loading } = useAxios<FormDataProps, IUser>({ endpoint: '/users', method: 'POST' });
 
   const handleRedirect = () => {
     navigation.navigate('Login');

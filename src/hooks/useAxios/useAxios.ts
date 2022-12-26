@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { api } from '../../services/api';
 import { IUseAxios } from './IUseAxios';
 
-export function useAxios<TData>({ endpoint, method }: IUseAxios) {
+export function useAxios<TPayload, TRes>({ endpoint, method }: IUseAxios) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AxiosError>();
-  const [data, setData] = useState<TData>();
+  const [data, setData] = useState<TRes>();
 
-  const executeAxios = async ({ payload }: { payload: TData }) => {
+  const executeAxios = async ({ payload }: { payload: TPayload }) => {
     setLoading(true);
     try {
-      const res = await api<TData>({
+      const res = await api<TRes>({
         method,
         url: endpoint,
         data: payload,
