@@ -1,13 +1,22 @@
 import {
-  Box, Button, HStack, Image, Text, View,
+  Box, Button, HStack, Image, Text, useDisclose, View,
 } from 'native-base';
 import { Dimensions } from 'react-native';
+import { IProduct } from '../../store/modules/cart/types';
+import { ActionSheet } from '../ActionSheet';
 
 const { width, height } = Dimensions.get('screen');
 
-export function Carousel({ item }: { item: string }) {
+export function Carousel({ item }: { item: IProduct }) {
+  const { isOpen, onClose, onOpen } = useDisclose();
+
+  const handleOpenActionSheet = () => {
+    if (isOpen) return;
+    onOpen();
+  };
+
   return (
-    <View width={width} pt="10" key={item} position="relative">
+    <View width={width} pt="10" key={item.uuid} position="relative" onTouchEnd={handleOpenActionSheet}>
       <Box
         bg={{
           linearGradient: {
@@ -23,11 +32,12 @@ export function Carousel({ item }: { item: string }) {
         display="flex"
         alignItems="center"
       >
-        <Image source={{ uri: item }} key={item} alt="img" size={120} rounded="full" bottom="3.5" />
+        <Image source={{ uri: item.image }} key={item.uuid} alt="img" size={120} rounded="full" bottom="3.5" />
         <HStack width="full" alignItems="center" justifyContent="space-evenly" my={5}>
           <Text fontWeight="semibold">Image Description</Text>
           <Button rounded="3xl" width={100} bgColor="black" onPress={() => console.log('pressed')}>aaa</Button>
         </HStack>
+        <ActionSheet isOpen={isOpen} product={item} onClose={onClose} />
       </Box>
     </View>
   );

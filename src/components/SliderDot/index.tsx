@@ -1,10 +1,11 @@
 import { Animated, Dimensions } from 'react-native';
+import { IProduct } from '../../store/modules/cart/types';
 
 const { width } = Dimensions.get('screen');
 
 interface ISliderDot {
   scrollX: Animated.Value
-  item: string,
+  item: IProduct,
   index: number
 }
 
@@ -24,7 +25,7 @@ export function SliderDot({ item, scrollX, index }: ISliderDot) {
   });
   return (
     <Animated.View
-      key={item}
+      key={item.uuid}
       style={{
         height: 12,
         width: dotWidth,

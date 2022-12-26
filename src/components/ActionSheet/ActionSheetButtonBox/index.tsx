@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -44,7 +45,7 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
   };
 
   useEffect(() => {
-    if (quantity === 0) {
+    if (quantity === 0 && productExists) {
       dispatch(removeProductInCart(productUuid));
       return;
     }
@@ -68,7 +69,6 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
 function PriceButton({ product }: { product: IProduct }) {
   const { quantity } = useSelector<RootState, ButtonState>((state) => state.actionSheetButton);
   const cart = useSelector<RootState, ICart>((state) => state.cart);
-  console.log('STATE', cart);
   const dispatch = useDispatch();
   const toast = useToast();
 
@@ -86,11 +86,10 @@ function PriceButton({ product }: { product: IProduct }) {
   };
 
   const priceTimesQuantity = product.price * quantity;
-  const result = currencyConverter(priceTimesQuantity);
+  const result = currencyConverter(priceTimesQuantity || product.price);
 
-  const showToast = () => {
+  const showToast = (message = '') => {
     const durationInMiliseconds = 1000;
-    const message = `Product ${product.uuid} added to your cart`;
 
     return toast.show({
       placement: 'top',
@@ -107,12 +106,15 @@ function PriceButton({ product }: { product: IProduct }) {
   };
 
   const handleAddToCart = () => {
+    if (quantity === 0) return showToast('Please, add a quantity');
+
     const productExist = cart?.products.some((item) => item.uuid === product.uuid);
     if (!productExist) {
+      showToast(`Product ${product.uuid} added to your cart!`);
       return dispatch(storeProductInCart(product, quantity));
     }
 
-    showToast();
+    showToast('Product quantity updated!');
     return dispatch(updateProductInCart(product, quantity));
   };
 
