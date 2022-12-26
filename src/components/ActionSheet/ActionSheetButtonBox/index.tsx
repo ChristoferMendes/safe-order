@@ -12,7 +12,6 @@ import { increaseQuantity } from '../../../store/modules/actionSheetButton/actio
 import { removeProductInCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/actions';
 import { IProduct } from '../../ProductsList/types';
 import { ICart } from '../../../store/modules/cart/interfaces';
-import { useSuccesToast } from '../../../hooks/SuccessToast';
 
 type ButtonState = { quantity: number };
 type Cart = { products: IProduct[] }

@@ -2,6 +2,7 @@ import {
   View, Text, HStack, Image, VStack, useDisclose,
 } from 'native-base';
 import { TouchableWithoutFeedback } from 'react-native';
+import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { ActionSheet } from '../ActionSheet';
 import { IProduct } from '../ProductsList/types';
 
@@ -15,6 +16,9 @@ export function ProductBox({ product }: { product: IProduct }) {
     onOpen();
   };
 
+  const currencyConverter = useCurrencyConverted();
+  const priceNumberToCurrency = currencyConverter(product.price);
+
   return (
     <TouchableWithoutFeedback>
       <HStack mx={10} onTouchEnd={handleOpenActionSheet}>
@@ -26,7 +30,7 @@ export function ProductBox({ product }: { product: IProduct }) {
             <Text maxW={160}>Vegetables with some....dsaddasdsadasdsadassaSasASaa</Text>
           </View>
           <HStack pl={3} justifyContent="space-around">
-            <Text fontWeight="semibold">$45.00</Text>
+            <Text fontWeight="semibold">{priceNumberToCurrency}</Text>
             <Text color="gray.300">325 Kcal</Text>
           </HStack>
         </VStack>
