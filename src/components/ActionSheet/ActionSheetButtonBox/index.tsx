@@ -11,7 +11,7 @@ import { RootState } from '../../../store';
 import { increaseQuantity } from '../../../store/modules/actionSheetButton/actions';
 import { removeProductInCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/actions';
 import { IProduct } from '../../ProductsList/types';
-import { ICart } from '../../../store/modules/cart/interfaces';
+import { ICart } from '../../../store/modules/cart/typescript/interfaces';
 
 type ButtonState = { quantity: number };
 type Cart = { products: IProduct[] }

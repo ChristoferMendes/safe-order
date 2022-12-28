@@ -1,15 +1,15 @@
-import { ActionTypes } from './types';
+import { ActionTypesActionSheetButton } from "./typescript/actionTypes";
 
 export function increaseQuantity(quantity: number) {
   return {
-    type: ActionTypes.increaseQuantity,
+    type: ActionTypesActionSheetButton.increaseQuantity,
     payload: quantity,
   };
 }
 
 export function setFinalPrice(price: number) {
   return {
-    type: ActionTypes.setFinalPrice,
+    type: ActionTypesActionSheetButton.setFinalPrice,
     payload: price,
   };
 }

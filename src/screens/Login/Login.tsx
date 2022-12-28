@@ -27,7 +27,8 @@ import { Input } from '../../components/Input';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { FormDataProps, ISessionResponse, SignUpNavigation } from './typescript';
 import { loginSchema } from './schema';
-import { IUser } from '../Register/typescript';
+import { storageToken } from '../../constants/token-key';
+import { StateUser } from '../../store/modules/users/typescript';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -35,8 +36,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<SignUpNavigation>();
   const showToast = useSuccesToast();
-  const tokenStorageKey = '@storage_token';
-  const user = useSelector<RootState, IUser | null>((state) => state.user);
+  const { user } = useSelector<RootState, StateUser>((state) => state.user);
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(loginSchema),
   });
@@ -46,10 +46,10 @@ export default function Login() {
   }, []);
 
   const storeUserToken = async (token: string) => {
-    await AsyncStorage.setItem(tokenStorageKey, token);
+    await AsyncStorage.setItem(storageToken, token);
   };
 
-  const getToken = async () => await AsyncStorage.getItem(tokenStorageKey);
+  const getToken = async () => await AsyncStorage.getItem(storageToken);
 
   const handleUserLogin = async ({ email, password }: FormDataProps) => {
     setLoading(true);
@@ -96,8 +96,8 @@ export default function Login() {
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange, value } }) => (
-              <Input label="email" onChangeText={onChange} errorMessage={errors.email?.message} value={value ?? user?.email} />
+            render={({ field: { onChange } }) => (
+              <Input label="email" onChangeText={onChange} errorMessage={errors.email?.message} />
             )}
           />
           <Controller

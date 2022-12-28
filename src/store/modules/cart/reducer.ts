@@ -1,23 +1,20 @@
-/* eslint-disable max-len */
-/* eslint-disable no-case-declarations */
-import { insertItem, removeItem, updateItem } from './array-manipulation';
-import {
-  Action, ActionTypes, IProduct,
-} from './types';
+import { insertItem, removeItem, updateItem } from './functions/array-manipulation';
+import { ActionTypesCart } from './typescript/actionTypes';
+import { ActionCart, StateCart } from './typescript/interfaces';
 
 const initialState = {
-  products: [] as IProduct[] | [],
-};
+  products: []
+} as StateCart;
 
-export default function cart(state = initialState, action: Action) {
+export default function cart(state = initialState, action: ActionCart) {
   switch (action.type) {
-    case ActionTypes.storeProductInCart:
+    case ActionTypesCart.storeProductInCart:
       return { ...state, products: insertItem(state, action) };
 
-    case ActionTypes.updateProductInCart:
+    case ActionTypesCart.updateProductInCart:
       return { ...state, products: updateItem(state, action) };
 
-    case ActionTypes.removeProductInCart:
+    case ActionTypesCart.removeProductInCart:
       return { ...state, products: removeItem(state, action) };
     default:
       return state;

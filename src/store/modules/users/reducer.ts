@@ -1,19 +1,15 @@
-/* eslint-disable no-case-declarations */
-import { IUser } from '../../../screens/Register/Register';
-import { ActionTypes } from './types';
+import { ActionUser, StateUser } from './typescript';
+import { ActionTypesUser } from './typescript/actionTypes';
 
-type State = IUser | null;
-type Action = {
-  type: string;
-  payload: IUser | null;
-}
-const initialState = null as State;
+const initialState = {
+  user: {}
+} as StateUser
 
-export default function user(state = initialState, action: Action) {
+export default function user(state = initialState, action: ActionUser) {
   switch (action.type) {
-    case ActionTypes.storeUserInfo:
+    case ActionTypesUser.storeUserInfo:
       const user = action.payload;
-      return { ...state, ...user };
+      return { ...state, user } as StateUser;
 
     default:
       return state;

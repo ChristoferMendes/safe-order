@@ -1,26 +1,12 @@
 /* eslint-disable no-case-declarations */
-import { ActionTypes } from './types';
+import { ActionProduct, StateProduct } from './typescript';
+import { ActionTypesProduct } from './typescript/actionTypes';
 
-interface IProduct {
-  uuid: string;
-  image: string;
-  price: number;
-  quantity: number;
-}
+const initialState = {} as StateProduct;
 
-interface State {
-  products: IProduct[] | null
-}
-const initialState = {} as State;
-
-interface Action {
-  type: string;
-  payload: IProduct[]
-}
-
-export default function product(state = initialState, action: Action) {
+export default function product(state = initialState, action: ActionProduct) {
   switch (action.type) {
-    case ActionTypes.storeProductInfo:
+    case ActionTypesProduct.storeProductInfo:
       const products = action.payload;
 
       return { ...state, ...products };

@@ -3,7 +3,7 @@ import {
 } from 'native-base';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import type { ICart } from '../../store/modules/cart/interfaces';
+import type { ICart } from '../../store/modules/cart/typescript/interfaces';
 
 export function ShoppingCart() {
   const cart = useSelector<RootState, ICart>((state) => state.cart);

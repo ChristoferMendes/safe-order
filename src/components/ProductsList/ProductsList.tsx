@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { storeProductInfo } from '../../store/modules/products/actions';
+import { IProduct } from '../../store/modules/products/typescript';
 import { ProductBox } from '../ProductBox';
-import { IProduct } from './types';
 
 export function ProductsList() {
   const products = [

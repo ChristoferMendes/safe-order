@@ -1,17 +1,17 @@
-import { Action, IProduct } from './types';
+import { ActionCart, StateCart } from "../typescript/interfaces";
 
 const initialState = {
-  products: [] as IProduct[] | [],
-};
+  products: []
+} as StateCart;
 
-function createProductWithQuantityRequested(action: Action) {
+function createProductWithQuantityRequested(action: ActionCart) {
   const { product, quantity } = action.payload;
   const productWithQuantity = { ...product, quantityRequested: quantity };
 
   return { productWithQuantity };
 }
 
-function findProductIndex(state = initialState, action: Action) {
+function findProductIndex(state = initialState, action: ActionCart) {
   const { products } = state;
   const { product } = action.payload;
   const productIndex = products.findIndex((item) => item.uuid === product.uuid);
@@ -19,7 +19,7 @@ function findProductIndex(state = initialState, action: Action) {
   return { productIndex };
 }
 
-function insertItem(state = initialState, action: Action) {
+function insertItem(state = initialState, action: ActionCart) {
   const { product } = action.payload;
   const { productWithQuantity } = createProductWithQuantityRequested(action);
   const copyOfProductsArray = state.products.slice();
@@ -28,7 +28,7 @@ function insertItem(state = initialState, action: Action) {
   return copyOfProductsArray;
 }
 
-function updateItem(state = initialState, action: Action) {
+function updateItem(state = initialState, action: ActionCart) {
   return state.products.map((item, index) => {
     const { productIndex } = findProductIndex(state, action);
 
@@ -44,7 +44,7 @@ function updateItem(state = initialState, action: Action) {
   });
 }
 
-function removeItem(state = initialState, action: Action) {
+function removeItem(state = initialState, action: ActionCart) {
   const { productIndex } = findProductIndex(state, action);
   return state.products.filter((_, index) => index !== productIndex);
 }

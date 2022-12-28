@@ -1,22 +1,19 @@
-/* eslint-disable no-case-declarations */
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActionToken, StateToken } from "./typescript";
+import { ActionTypesToken } from "./typescript/actionTypes";
 
-type State = string | null
-const initialState = null as State;
 
-type Action = {
-  type: string
-  payload: string
-}
+const initialState = {
+  token: null
+} as StateToken;
 
-export default function token(state = initialState, action: Action) {
+export default function token(state = initialState, action: ActionToken) {
   switch (action.type) {
-    case 'INVALIDATE_TOKEN':
-      return { state, token: null };
-    case 'SET_TOKEN':
+    case ActionTypesToken.invalidateToken:
+      return { ...state, token: null } as StateToken;
+    case ActionTypesToken.setToken:
       const token = action.payload;
 
-      return { state, token };
+      return { ...state, token } as StateToken;
     default:
       return state;
   }

@@ -4,13 +4,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { TabNavigator } from './tab.routes';
 import { StackNavigator } from './stack.routes';
+import { storageToken } from '../constants/token-key';
 
 export function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const token = useSelector<RootState, string | null>((state) => state.token);
 
   const getTokenFromAsyncStorage = async () => {
-    const token = await AsyncStorage.getItem('@storage_token');
+    const token = await AsyncStorage.getItem(storageToken);
     if (!token) return setIsAuthenticated(false);
 
     return setIsAuthenticated(true);
@@ -20,9 +21,5 @@ export function Router() {
     getTokenFromAsyncStorage();
   }, [token]);
 
-  return (
-    <>
-      {isAuthenticated ? <TabNavigator /> : <StackNavigator />}
-    </>
-  );
+  return isAuthenticated ? <TabNavigator /> : <StackNavigator />;
 }

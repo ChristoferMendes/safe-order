@@ -2,14 +2,6 @@ import { NavigationProp } from '@react-navigation/native';
 import { SchemaOf } from 'yup';
 import { NavigationsParamList } from '../../Login/typescript';
 
-interface IUser {
-  uuid: string;
-  name: string;
-  email: string;
-  avatar: string | null;
-  avatar_url: string | null;
-}
-
 type LoginNavigation = NavigationProp<NavigationsParamList, 'Login'>;
 
 type FormDataProps = {

@@ -1,9 +1,9 @@
-import { IProduct } from '../../../components/ProductsList/types';
-import { ActionTypes } from './types';
+import { IProduct } from "../products/typescript";
+import { ActionTypesCart } from "./typescript/actionTypes";
 
 export function storeProductInCart(product: IProduct, quantity: number) {
   return {
-    type: ActionTypes.storeProductInCart,
+    type: ActionTypesCart.storeProductInCart,
     payload: {
       product,
       quantity,
@@ -13,7 +13,7 @@ export function storeProductInCart(product: IProduct, quantity: number) {
 
 export function updateProductInCart(product: IProduct, quantity: number) {
   return {
-    type: ActionTypes.updateProductInCart,
+    type: ActionTypesCart.updateProductInCart,
     payload: {
       product,
       quantity,
@@ -23,7 +23,7 @@ export function updateProductInCart(product: IProduct, quantity: number) {
 
 export function removeProductInCart(productUuid: IProduct['uuid']) {
   return {
-    type: ActionTypes.removeProductInCart,
+    type: ActionTypesCart.removeProductInCart,
     payload: {
       product: {
         uuid: productUuid,

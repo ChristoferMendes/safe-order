@@ -1,9 +1,9 @@
-import { IUser } from '../../../screens/Register/Register';
-import { ActionTypes } from './types';
+import { IUser } from '../../../screens/Register/typescript';
+import { ActionTypesUser } from './typescript/actionTypes';
 
 export function storeUserInfo(userInfo: IUser | null) {
   return {
-    type: ActionTypes.storeUserInfo,
+    type: ActionTypesUser.storeUserInfo,
     payload: userInfo,
   };
 }

@@ -1,9 +1,9 @@
-import { IProduct } from '../../../components/ProductsList/types';
-import { ActionTypes } from './types';
+import { IProduct } from './typescript';
+import { ActionTypesProduct } from './typescript/actionTypes';
 
 export function storeProductInfo(products: IProduct[]) {
   return {
-    type: ActionTypes.storeProductInfo,
+    type: ActionTypesProduct.storeProductInfo,
     payload: products,
   };
 }

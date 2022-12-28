@@ -12,11 +12,11 @@ import {
 } from 'native-base';
 import { ReactNode, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IUser } from '../../screens/Register/Register';
 import { RootState } from '../../store';
 import { invalidateToken } from '../../store/modules/token/actions';
 import { LoadingSpinner } from '../LoadingSpinner';
 import { IAlertDialog } from './ILogoutBox';
+import { IUser } from '../../screens/Register/typescript';
 
 function Main({ children }: { children: ReactNode }) {
   return (

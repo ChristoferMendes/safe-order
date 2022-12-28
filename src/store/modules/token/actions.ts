@@ -1,12 +1,14 @@
+import { ActionTypesToken } from "./typescript/actionTypes";
+
 export function setToken(token: string | null) {
   return {
-    type: 'SET_TOKEN',
+    type: ActionTypesToken.setToken,
     payload: token,
   };
 }
 
 export function invalidateToken() {
   return {
-    type: 'INVALIDATE_TOKEN',
+    type: ActionTypesToken.invalidateToken,
   };
 }
