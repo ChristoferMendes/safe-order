@@ -1,48 +1,20 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
   Center, Box, Heading, VStack, Button, Pressable, Icon, Spinner, useToast,
 } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import { AxiosError } from 'axios';
 import { Input } from '../../components/Input';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { useSuccesToast } from '../../hooks/SuccessToast';
-import { NavigationsParamList } from '../Login/Login';
-import { useAxios } from '../../hooks/useAxios/useAxios';
 import { api } from '../../services/api';
-
-export interface IUser {
-  uuid: string;
-  name: string;
-  email: string;
-  avatar: string | null;
-  avatar_url: string | null;
-}
-
-type LoginNavigation = NavigationProp<NavigationsParamList, 'Login'>;
-
-type FormDataProps = {
-  name: string;
-  email: string;
-  password: string;
-}
-
-const signUpSchema: yup.SchemaOf<FormDataProps> = yup.object({
-  name: yup.string().required('Please, fill the name field').notOneOf(['email']),
-  password: yup
-    .string()
-    .required('Please, fill the password field')
-    .min(6, 'Password must contain at least 6 characters'),
-  email: yup
-    .string()
-    .required('Please, fill the email field')
-    .email('Invalid e-mail'),
-});
+import {
+  FormDataProps, IUser, LoginNavigation,
+} from './typescript';
+import { signUpSchema } from './schema';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -56,6 +28,7 @@ export default function Register() {
   const showToast = useSuccesToast();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+
   const handleRedirect = () => {
     navigation.navigate('Login');
   };

@@ -1,12 +1,9 @@
 import { NativeBaseProvider } from 'native-base';
-import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Home from './src/screens/Login';
 import { store } from './src/store';
-import { StackNavigator } from './src/routes/routes';
+import { Router } from './src/routes';
 
 const config = {
   dependencies: {
@@ -19,18 +16,9 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <NativeBaseProvider config={config}>
-          <StackNavigator />
+          <Router />
         </NativeBaseProvider>
       </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

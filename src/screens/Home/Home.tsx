@@ -10,7 +10,7 @@ import { ImageScroller } from '../../components/ImageScroller';
 import { ProductsList } from '../../components/ProductsList';
 import { api } from '../../services/api';
 import { storeUserInfo } from '../../store/modules/users/actions';
-import { IUser } from '../Register/Register';
+import { IUser } from '../Register/typescript';
 
 const makeMeRequest = async () => {
   const token = await AsyncStorage.getItem('@storage_token');

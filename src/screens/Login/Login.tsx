@@ -10,61 +10,31 @@ import {
   HStack,
   Icon,
   Spinner,
+  Pressable,
 } from 'native-base';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { Controller, useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api';
 import { RootState } from '../../store';
-import { IUser } from '../Register/Register';
 import { useSuccesToast } from '../../hooks/SuccessToast';
 import { setToken } from '../../store/modules/token/actions';
 import { Input } from '../../components/Input';
 import { storeUserInfo } from '../../store/modules/users/actions';
-
-export interface NavigationsParamList {
-  Register: undefined
-  Home: undefined
-  Login: undefined
-}
-
-interface ISessionResponse {
-  message: string
-  token: string
-  user: {
-    uuid: string;
-    name: string;
-    email: string;
-    avatar: string | null;
-    avatar_url: string | null;
-  }
-}
-
-type SignUpNavigation = NavigationProp<NavigationsParamList, 'Register'>;
-type HomeScreenNavigation = NavigationProp<NavigationsParamList, 'Home'>
-
-interface FormDataProps {
-  email: string;
-  password: string;
-}
-
-const loginSchema: yup.SchemaOf<FormDataProps> = yup.object({
-  email: yup.string().required('Email field is required').email('Email invalid'),
-  password: yup.string().required('Password field is required'),
-});
+import { FormDataProps, ISessionResponse, SignUpNavigation } from './typescript';
+import { loginSchema } from './schema';
+import { IUser } from '../Register/typescript';
 
 export default function Login() {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<SignUpNavigation>();
   const showToast = useSuccesToast();
-  const dispatch = useDispatch();
   const tokenStorageKey = '@storage_token';
   const user = useSelector<RootState, IUser | null>((state) => state.user);
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
