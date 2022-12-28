@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import {
-  Center, Box, Heading, VStack, Button, Pressable, Icon, Spinner,
+  Center, Box, Heading, VStack, Button, Pressable, Icon, Spinner, useToast,
 } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,11 +8,13 @@ import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AxiosError } from 'axios';
 import { Input } from '../../components/Input';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { useSuccesToast } from '../../hooks/SuccessToast';
 import { NavigationsParamList } from '../Login/Login';
 import { useAxios } from '../../hooks/useAxios/useAxios';
+import { api } from '../../services/api';
 
 export interface IUser {
   uuid: string;
@@ -31,34 +33,55 @@ type FormDataProps = {
 }
 
 const signUpSchema: yup.SchemaOf<FormDataProps> = yup.object({
-  name: yup.string().required('Please, fill the name field'),
-  email: yup.string().required('Please, fill the email field').email('Invalid e-mail'),
+  name: yup.string().required('Please, fill the name field').notOneOf(['email']),
   password: yup
     .string()
     .required('Please, fill the password field')
     .min(6, 'Password must contain at least 6 characters'),
+  email: yup
+    .string()
+    .required('Please, fill the email field')
+    .email('Invalid e-mail'),
 });
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
-  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+  const {
+    control, handleSubmit, formState: { errors }, setError,
+  } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema),
   });
   const dispatch = useDispatch();
   const navigation = useNavigation<LoginNavigation>();
   const showToast = useSuccesToast();
-  const { executeAxios, loading } = useAxios<FormDataProps, IUser>({ endpoint: '/users', method: 'POST' });
-
+  const toast = useToast();
+  const [loading, setLoading] = useState(false);
   const handleRedirect = () => {
     navigation.navigate('Login');
   };
 
+  const checkIfUserEmailExists = (email: FormDataProps['email']) => {
+    api.post('/user/email', { email }).then(() => {
+      setError('email', { message: 'Email already exist' });
+    }).catch(() => {});
+  };
+
   const handleSignUp = async (data: FormDataProps) => {
-    const res = await executeAxios({ payload: data });
-    if (!res) return;
-    dispatch(storeUserInfo(res.data));
-    showToast({ message: 'Signed up with success' });
-    handleRedirect();
+    setLoading(true);
+    checkIfUserEmailExists(data.email);
+    try {
+      const res = await api.post<IUser>('/users', { ...data });
+      dispatch(storeUserInfo(res.data));
+      showToast({ message: 'Signed up with success' });
+      handleRedirect();
+    } catch {
+      toast.show({
+        colorScheme: 'danger',
+        title: 'Error while trying to sign up',
+      });
+    }
+
+    setLoading(false);
   };
 
   return (

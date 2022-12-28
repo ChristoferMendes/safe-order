@@ -126,8 +126,8 @@ export default function Login() {
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange } }) => (
-              <Input label="email" onChangeText={onChange} errorMessage={errors.email?.message} />
+            render={({ field: { onChange, value } }) => (
+              <Input label="email" onChangeText={onChange} errorMessage={errors.email?.message} value={value ?? user?.email} />
             )}
           />
           <Controller

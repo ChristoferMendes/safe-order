@@ -21,13 +21,14 @@ interface IAxiosErrorResponse {
 
 export const api = axios.create({ baseURL: URI });
 
-api.interceptors.response.use((response) => response, (error) => {
-  const err = error as AxiosError;
-  const { status, data } = err.response! as IAxiosErrorResponse;
-  const customMessage = status === 400 ? data.validation.body.message : data.message;
+// api.interceptors.response.use((response) => response, (error) => {
+//   error
+//   // const err = error as AxiosError;
+//   // const { status, data } = err.response! as IAxiosErrorResponse;
+//   // const customMessage = status === 400 ? data.validation.body.message : data.message;
 
-  Toast.show({
-    title: customMessage,
-    backgroundColor: 'red.400',
-  });
-});
+//   // Toast.show({
+//   //   title: customMessage,
+//   //   backgroundColor: 'red.400',
+//   // });
+// });
