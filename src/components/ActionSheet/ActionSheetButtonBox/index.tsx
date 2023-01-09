@@ -65,7 +65,7 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
   );
 }
 
-function PriceButton({ product }: { product: IProduct }) {
+function PriceButton({ product, onClose }: { product: IProduct; onClose: () => void }) {
   const { quantity } = useSelector<RootState, ButtonState>((state) => state.actionSheetButton);
   const cart = useSelector<RootState, StateCart>(selectCart);
   const dispatch = useDispatch();
@@ -110,11 +110,13 @@ function PriceButton({ product }: { product: IProduct }) {
     const productExist = cart?.products.some((item) => item.uuid === product.uuid);
     if (!productExist) {
       showToast(`Product ${product.name} added to your cart!`);
+      onClose();
       return dispatch(storeProductInCart({ product, quantity }));
     }
 
     showToast('Product quantity updated!');
-    return dispatch(updateProductInCart({ product, quantity }));
+    dispatch(updateProductInCart({ product, quantity }));
+    return onClose();
   };
 
   const buttonLabel = `Add to cart ${result}`;

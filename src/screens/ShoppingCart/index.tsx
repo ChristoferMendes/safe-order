@@ -2,16 +2,18 @@ import {
   View, Text, FlatList, Image, HStack, VStack,
 } from 'native-base';
 import { useSelector } from 'react-redux';
+import { CartWithoutProducts } from '../../components/CartWithoutProducts';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { selectCart } from '../../store/modules/cart/cartSlice';
 
 export function ShoppingCart() {
   const cart = useSelector(selectCart);
   const currencyConverter = useCurrencyConverted();
+  console.log('cart', cart)
 
   return (
     <View>
-      <FlatList
+      {cart.products.length ? <FlatList
         data={cart.products}
         renderItem={({ item }) => (
           <HStack>
@@ -22,7 +24,9 @@ export function ShoppingCart() {
             </VStack>
           </HStack>
         )}  
-      />
+      /> : (
+        <CartWithoutProducts />
+      )}
     </View>
   );
 }

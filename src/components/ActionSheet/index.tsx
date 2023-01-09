@@ -42,7 +42,7 @@ export function ActionSheet({ isOpen, product, onClose }: IActionSheetProps) {
         <NativeBaseActionSheet.Item alignItems="center">
           <ActionSheetButtonBox>
             <ActionSheetButtonBox.QuantityButton productUuid={product.uuid} />
-            <ActionSheetButtonBox.PriceButton product={product} />
+            <ActionSheetButtonBox.PriceButton product={product} onClose={onClose}/>
           </ActionSheetButtonBox>
         </NativeBaseActionSheet.Item>
       </NativeBaseActionSheet.Content>
