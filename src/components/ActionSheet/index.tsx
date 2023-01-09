@@ -19,7 +19,7 @@ export function ActionSheet({ isOpen, product, onClose }: IActionSheetProps) {
     <NativeBaseActionSheet isOpen={isOpen} onClose={onClose}>
       <NativeBaseActionSheet.Content>
         <NativeBaseActionSheet.Item alignItems="center">
-          <ProductImage imageLink={product.image} />
+          <ProductImage imageLink={product.image_url} />
         </NativeBaseActionSheet.Item>
         <NativeBaseActionSheet.Item>
           <ActionSheetSummary label="Vegetables with some fruits" />

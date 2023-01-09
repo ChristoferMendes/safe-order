@@ -39,7 +39,6 @@ function Main({ children }: { children: ReactNode }) {
 function Icon() {
   const { user } = useSelector<RootState, StateUser>((state) => state.user);
   const imageUrl = user?.avatar_url?.replace('http://localhost:3333', URI);
-  console.log('User', user);
 
   return (
     <HStack alignItems="center" space={2}>

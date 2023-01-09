@@ -2,26 +2,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View, Text, ScrollView,
 } from 'native-base';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Filters } from '../../components/Filters';
 import { Header } from '../../components/Header';
 import { ImageScroller } from '../../components/ImageScroller';
 import { ProductsList } from '../../components/ProductsList';
+import { storageToken } from '../../constants/token-key';
 import { api } from '../../services/api';
+import { storeProductInfo } from '../../store/modules/products/actions';
+import { IProduct } from '../../store/modules/products/typescript';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { IUser } from '../Register/typescript';
-
-const makeMeRequest = async () => {
-  const token = await AsyncStorage.getItem('@storage_token');
-  const res = await api.post<IUser>('/me', {}, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return res.data;
-};
 
 export function Home() {
   const dispatch = useDispatch();
@@ -31,6 +23,18 @@ export function Home() {
   };
 
   useEffect(() => {
+    async function getProducts() {
+      const token = await AsyncStorage.getItem(storageToken)
+      const res = await api.get<IProduct[]>('/products', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      dispatch(storeProductInfo(res.data))
+    }
+
+    getProducts();
     makeMeRequest()
       .then(dispatchUserInfo);
   }, []);
@@ -49,3 +53,14 @@ export function Home() {
     </ScrollView>
   );
 }
+
+const makeMeRequest = async () => {
+  const token = await AsyncStorage.getItem('@storage_token');
+  const res = await api.post<IUser>('/me', {}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};

@@ -2,18 +2,23 @@ import {
   Box, Button, HStack, Image, Text, useDisclose, View,
 } from 'native-base';
 import { Dimensions } from 'react-native';
-import { IProduct } from '../../store/modules/cart/types';
+import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
+import { IProduct } from '../../store/modules/products/typescript';
 import { ActionSheet } from '../ActionSheet';
 
 const { width, height } = Dimensions.get('screen');
 
 export function Carousel({ item }: { item: IProduct }) {
   const { isOpen, onClose, onOpen } = useDisclose();
+  const currencyConverter = useCurrencyConverted();
 
   const handleOpenActionSheet = () => {
     if (isOpen) return;
-    onOpen();
+    onOpen(); 
   };
+
+  const numberPriceToDolarString = currencyConverter(item.price)
+
 
   return (
     <View width={width} pt="10" key={item.uuid} position="relative" onTouchEnd={handleOpenActionSheet}>
@@ -32,10 +37,10 @@ export function Carousel({ item }: { item: IProduct }) {
         display="flex"
         alignItems="center"
       >
-        <Image source={{ uri: item.image }} key={item.uuid} alt="img" size={120} rounded="full" bottom="3.5" />
+        <Image source={{ uri: item.image_url }} key={item.uuid} alt="img" size={120} rounded="full" bottom="3.5" />
         <HStack width="full" alignItems="center" justifyContent="space-evenly" my={5}>
-          <Text fontWeight="semibold">Image Description</Text>
-          <Button rounded="3xl" width={100} bgColor="black" onPress={() => console.log('pressed')}>aaa</Button>
+          <Text fontWeight="semibold" numberOfLines={1} ellipsizeMode={"tail"} w="48">{item.description}</Text>
+          <Button rounded="3xl" width={100} bgColor="black" onPress={() => console.log('pressed')}>{numberPriceToDolarString}</Button>
         </HStack>
         <ActionSheet isOpen={isOpen} product={item} onClose={onClose} />
       </Box>

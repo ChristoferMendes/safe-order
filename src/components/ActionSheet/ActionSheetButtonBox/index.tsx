@@ -88,7 +88,7 @@ function PriceButton({ product }: { product: IProduct }) {
   const result = currencyConverter(priceTimesQuantity || product.price);
 
   const showToast = (message = '') => {
-    const durationInMiliseconds = 1000;
+    const durationInMiliseconds = 1800;
 
     return toast.show({
       placement: 'top',
@@ -109,7 +109,7 @@ function PriceButton({ product }: { product: IProduct }) {
 
     const productExist = cart?.products.some((item) => item.uuid === product.uuid);
     if (!productExist) {
-      showToast(`Product ${product.uuid} added to your cart!`);
+      showToast(`Product ${product.name} added to your cart!`);
       return dispatch(storeProductInCart({ product, quantity }));
     }
 

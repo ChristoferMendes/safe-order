@@ -5,6 +5,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { IProduct } from '../../store/modules/products/typescript';
 import { ActionSheet } from '../ActionSheet';
+import { URI } from 'react-native-dotenv';
 
 export function ProductBox({ product }: { product: IProduct }) {
   const {
@@ -23,7 +24,7 @@ export function ProductBox({ product }: { product: IProduct }) {
     <TouchableWithoutFeedback>
       <HStack mx={10} onTouchEnd={handleOpenActionSheet}>
         <View>
-          <Image source={{ uri: product.image }} size={120} alt="" rounded="full" />
+          <Image source={{ uri: product.image_url }} size={120} alt="" rounded="full" />
         </View>
         <VStack justifyContent="center" space={3}>
           <View>

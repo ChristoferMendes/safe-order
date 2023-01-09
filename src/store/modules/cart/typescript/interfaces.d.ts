@@ -1,6 +1,6 @@
 interface ICartProduct {
   uuid: string;
-  image: string;
+  image_url: string;
   quantity: number;
   quantityRequested: number;
   description: number;

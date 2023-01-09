@@ -1,5 +1,6 @@
 export interface IProduct {
-  image: string;
+  name: string;
+  image_url: string;
   uuid: string;
   price: number
   quantity: number;

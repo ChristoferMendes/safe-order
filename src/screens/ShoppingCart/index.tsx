@@ -15,7 +15,7 @@ export function ShoppingCart() {
         data={cart.products}
         renderItem={({ item }) => (
           <HStack>
-            <Image source={{ uri: item.image }} size={120} alt="" />
+            <Image source={{ uri: item.image_url }} size={120} alt="" />
             <VStack my="auto">
               <Text>{item.description}</Text>
               <Text>{currencyConverter(item.price * item.quantityRequested)}</Text>

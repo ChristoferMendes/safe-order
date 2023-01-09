@@ -10,7 +10,6 @@ import { StateToken } from '../store/modules/token/typescript';
 export function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { token } = useSelector<RootState, StateToken>((state) => state.token);
-  console.log('token', token)
 
   const getTokenFromAsyncStorage = async () => {
     const token = await AsyncStorage.getItem(storageToken);
