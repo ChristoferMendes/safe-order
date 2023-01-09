@@ -43,8 +43,6 @@ export function Home() {
       .then(dispatchUserInfo);
   }, []);
 
-  console.log('Loadinngggg:', loading)
-
   return ( 
     <ScrollView horizontal={false}>
       <Header />

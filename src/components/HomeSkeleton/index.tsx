@@ -5,7 +5,6 @@ import { SkeletonCarouselDot } from './SkeletonCarouselDot';
 import { SkeletonFilter } from './SkeletonFilter';
 
 export function HomeSkeleton({ loading }: { loading: boolean }) {
-  console.log('Loading: ', loading)
   return (
     <>
       <Skeleton isLoaded={loading} display={"none"}>
