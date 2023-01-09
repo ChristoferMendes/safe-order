@@ -39,7 +39,7 @@ export function Carousel({ item }: { item: IProduct }) {
       >
         <Image source={{ uri: item.image_url }} key={item.uuid} alt="img" size={120} rounded="full" bottom="3.5" />
         <HStack width="full" alignItems="center" justifyContent="space-evenly" my={5}>
-          <Text fontWeight="semibold" numberOfLines={1} ellipsizeMode={"tail"} w="48">{item.description}</Text>
+          <Text fontWeight="semibold" numberOfLines={1} ellipsizeMode={"tail"} w="40">{item.description}</Text>
           <Button rounded="3xl" width={100} bgColor="black" onPress={() => console.log('pressed')}>{numberPriceToDolarString}</Button>
         </HStack>
         <ActionSheet isOpen={isOpen} product={item} onClose={onClose} />
