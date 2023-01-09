@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  View, Text, ScrollView, Skeleton, HStack,
+  View, ScrollView
 } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';

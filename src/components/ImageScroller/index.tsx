@@ -4,7 +4,6 @@ import {
   Animated, NativeScrollEvent, NativeSyntheticEvent,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { RootState } from '../../store';
 import { IProduct, StateProduct } from '../../store/modules/products/typescript';
 import { Carousel } from '../Carousel';
