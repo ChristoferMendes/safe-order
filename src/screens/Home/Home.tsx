@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  View, Text, ScrollView,
+  View, Text, ScrollView, Skeleton, HStack,
 } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Filters } from '../../components/Filters';
 import { Header } from '../../components/Header';
+import { HomeSkeleton } from '../../components/HomeSkeleton';
+import { HomeTitle } from '../../components/HomeTitle';
 import { ImageScroller } from '../../components/ImageScroller';
 import { ProductsList } from '../../components/ProductsList';
 import { storageToken } from '../../constants/token-key';
@@ -17,6 +19,7 @@ import { IUser } from '../Register/typescript';
 
 export function Home() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   const dispatchUserInfo = (user: IUser) => {
     dispatch(storeUserInfo(user));
@@ -31,7 +34,8 @@ export function Home() {
         }
       })
 
-      dispatch(storeProductInfo(res.data))
+      dispatch(storeProductInfo(res.data));
+      setLoading(false);
     }
 
     getProducts();
@@ -39,15 +43,16 @@ export function Home() {
       .then(dispatchUserInfo);
   }, []);
 
-  return (
+  console.log('Loadinngggg:', loading)
+
+  return ( 
     <ScrollView horizontal={false}>
       <Header />
       <View>
-        <View pt={5} pl={8}>
-          <Text fontWeight="bold" fontSize="xl">Order the best ones!</Text>
-        </View>
+        <HomeTitle />
+        <HomeSkeleton loading={loading}/>
         <ImageScroller />
-        <Filters />
+        <Filters loading={loading} />
         <ProductsList />
       </View>
     </ScrollView>
