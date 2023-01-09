@@ -5,10 +5,12 @@ import { RootState } from '../store';
 import { TabNavigator } from './tab.routes';
 import { StackNavigator } from './stack.routes';
 import { storageToken } from '../constants/token-key';
+import { StateToken } from '../store/modules/token/typescript';
 
 export function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const token = useSelector<RootState, string | null>((state) => state.token);
+  const { token } = useSelector<RootState, StateToken>((state) => state.token);
+  console.log('token', token)
 
   const getTokenFromAsyncStorage = async () => {
     const token = await AsyncStorage.getItem(storageToken);

@@ -9,9 +9,9 @@ import { ReactNode, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { increaseQuantity } from '../../../store/modules/actionSheetButton/actions';
-import { removeProductInCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/actions';
-import { IProduct } from '../../ProductsList/types';
-import { ICart } from '../../../store/modules/cart/typescript/interfaces';
+import { IProduct } from '../../../store/modules/products/typescript';
+import { StateCart } from '../../../store/modules/cart/typescript/interfaces';
+import { removeProductInCart, selectCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/cartSlice';
 
 type ButtonState = { quantity: number };
 type Cart = { products: IProduct[] }
@@ -31,7 +31,7 @@ function Main({ children }: { children: ReactNode }) {
 
 function QuantityButton({ productUuid }: { productUuid: string }) {
   const dispatch = useDispatch();
-  const cart = useSelector<RootState, Cart>((state) => state.cart);
+  const cart = useSelector<RootState, StateCart>((state) => state.cart);
   const productExists = cart?.products.find((item) => item.uuid.match(productUuid));
   const [quantity, setQuantity] = useState(productExists?.quantityRequested ?? 1);
 
@@ -67,7 +67,7 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
 
 function PriceButton({ product }: { product: IProduct }) {
   const { quantity } = useSelector<RootState, ButtonState>((state) => state.actionSheetButton);
-  const cart = useSelector<RootState, ICart>((state) => state.cart);
+  const cart = useSelector<RootState, StateCart>(selectCart);
   const dispatch = useDispatch();
   const toast = useToast();
 
@@ -110,11 +110,11 @@ function PriceButton({ product }: { product: IProduct }) {
     const productExist = cart?.products.some((item) => item.uuid === product.uuid);
     if (!productExist) {
       showToast(`Product ${product.uuid} added to your cart!`);
-      return dispatch(storeProductInCart(product, quantity));
+      return dispatch(storeProductInCart({ product, quantity }));
     }
 
     showToast('Product quantity updated!');
-    return dispatch(updateProductInCart(product, quantity));
+    return dispatch(updateProductInCart({ product, quantity }));
   };
 
   const buttonLabel = `Add to cart ${result}`;

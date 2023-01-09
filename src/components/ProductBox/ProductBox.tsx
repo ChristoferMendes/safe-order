@@ -3,8 +3,8 @@ import {
 } from 'native-base';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
+import { IProduct } from '../../store/modules/products/typescript';
 import { ActionSheet } from '../ActionSheet';
-import { IProduct } from '../ProductsList/types';
 
 export function ProductBox({ product }: { product: IProduct }) {
   const {

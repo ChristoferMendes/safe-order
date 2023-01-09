@@ -16,7 +16,7 @@ import { RootState } from '../../store';
 import { invalidateToken } from '../../store/modules/token/actions';
 import { LoadingSpinner } from '../LoadingSpinner';
 import { IAlertDialog } from './ILogoutBox';
-import { IUser } from '../../screens/Register/typescript';
+import { StateUser } from '../../store/modules/users/typescript';
 
 function Main({ children }: { children: ReactNode }) {
   return (
@@ -37,8 +37,9 @@ function Main({ children }: { children: ReactNode }) {
 }
 
 function Icon() {
-  const user = useSelector<RootState, IUser | null>((state) => state.user);
+  const { user } = useSelector<RootState, StateUser>((state) => state.user);
   const imageUrl = user?.avatar_url?.replace('http://localhost:3333', URI);
+  console.log('User', user);
 
   return (
     <HStack alignItems="center" space={2}>

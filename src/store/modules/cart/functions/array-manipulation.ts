@@ -4,35 +4,35 @@ const initialState = {
   products: []
 } as StateCart;
 
-function createProductWithQuantityRequested(action: ActionCart) {
-  const { product, quantity } = action.payload;
+function createProductWithQuantityRequested(payload: ActionCart['payload']) {
+  const { product, quantity } = payload;
   const productWithQuantity = { ...product, quantityRequested: quantity };
 
   return { productWithQuantity };
 }
 
-function findProductIndex(state = initialState, action: ActionCart) {
+function findProductIndex(state = initialState, payload: ActionCart['payload']) {
   const { products } = state;
-  const { product } = action.payload;
+  const { product } = payload;
   const productIndex = products.findIndex((item) => item.uuid === product.uuid);
 
   return { productIndex };
 }
 
-function insertItem(state = initialState, action: ActionCart) {
-  const { product } = action.payload;
-  const { productWithQuantity } = createProductWithQuantityRequested(action);
+function insertItem(state = initialState, payload: ActionCart['payload']) {
+  const { product } = payload;
+  const { productWithQuantity } = createProductWithQuantityRequested(payload);
   const copyOfProductsArray = state.products.slice();
   copyOfProductsArray.splice(+product.uuid, 0, productWithQuantity);
 
   return copyOfProductsArray;
 }
 
-function updateItem(state = initialState, action: ActionCart) {
+function updateItem(state = initialState, payload: ActionCart['payload']) {
   return state.products.map((item, index) => {
-    const { productIndex } = findProductIndex(state, action);
+    const { productIndex } = findProductIndex(state, payload);
 
-    const { productWithQuantity } = createProductWithQuantityRequested(action);
+    const { productWithQuantity } = createProductWithQuantityRequested(payload);
     if (index !== productIndex) {
       return item;
     }
@@ -44,8 +44,8 @@ function updateItem(state = initialState, action: ActionCart) {
   });
 }
 
-function removeItem(state = initialState, action: ActionCart) {
-  const { productIndex } = findProductIndex(state, action);
+function removeItem(state = initialState, payload: ActionCart['payload']) {
+  const { productIndex } = findProductIndex(state, payload);
   return state.products.filter((_, index) => index !== productIndex);
 }
 

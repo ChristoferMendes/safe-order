@@ -6,7 +6,7 @@ import { ProductImage } from '../ProductImage';
 import { ActionSheetSummary } from './ActionSheetSummary';
 import { ActionSheetDescription } from './ActionSheetDescription';
 import { ActionSheetButtonBox } from './ActionSheetButtonBox';
-import { IProduct } from '../ProductsList/types';
+import { IProduct } from '../../store/modules/products/typescript';
 
 interface IActionSheetProps {
   isOpen: boolean;

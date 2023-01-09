@@ -4,6 +4,7 @@ export interface IProduct {
   price: number
   quantity: number;
   quantityRequested: number;
+  description: string;
 }
 
 
