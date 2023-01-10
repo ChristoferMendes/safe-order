@@ -19,7 +19,7 @@ export const cartSlice = createSlice({
     },
     removeProductInCart(state, { payload }) {
       return { ...state, products: removeItem(state, payload) }
-    }
+    },
   },
 })
 
