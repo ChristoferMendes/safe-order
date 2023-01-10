@@ -3,6 +3,7 @@ import {
   View, ScrollView
 } from 'native-base';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Filters } from '../../components/Filters';
 import { Header } from '../../components/Header';
@@ -12,13 +13,14 @@ import { ImageScroller } from '../../components/ImageScroller';
 import { ProductsList } from '../../components/ProductsList';
 import { storageToken } from '../../constants/token-key';
 import { api } from '../../services/api';
-import { storeProductInfo } from '../../store/modules/products/productSlice';
+import { selectProduct, storeProductInfo } from '../../store/modules/products/productSlice';
 import { IProduct } from '../../store/modules/products/typescript';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { IUser } from '../Register/typescript';
 
 export function Home() {
   const dispatch = useDispatch();
+  const { products } = useSelector(selectProduct)
   const [loading, setLoading] = useState(true);
 
   const dispatchUserInfo = (user: IUser) => {
@@ -26,6 +28,8 @@ export function Home() {
   };
 
   useEffect(() => {
+    
+    
     async function getProducts() {
       const token = await AsyncStorage.getItem(storageToken)
       const res = await api.get<IProduct[]>('/products', {
@@ -38,10 +42,13 @@ export function Home() {
       setLoading(false);
     }
 
-    getProducts();
+    if (!products?.length) {
+      getProducts()
+    }
+
     makeMeRequest()
       .then(dispatchUserInfo);
-  }, []);
+  }, [products]);
 
   return ( 
     <ScrollView horizontal={false}>

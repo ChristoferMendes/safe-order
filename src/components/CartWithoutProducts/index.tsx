@@ -10,29 +10,31 @@ export function CartWithoutProducts() {
 
   return (
     <VStack>
-      <MotiImage
-        source={{ uri: 'https://homempizza.com.br/wp-content/uploads/2019/08/pizza.png' }}
-        style={{ height: 200 }}
-        resizeMode="contain"
-        from={{
-          rotate: '180deg',
-          opacity: 0,
-        }}
-        animate={{
-          rotate: '0deg',
-          opacity: 1
-        }}
-        transition={{
-          type: 'timing',
-          duration: 2000
-        }}
-      />
-      <HStack justifyContent="center">
-        <Text fontSize={"md"} fontWeight="semibold" my="6">
-          Don't have any products? Keep exploring!
-        </Text>
-      </HStack>
-      <ScrollView horizontal>
+      <VStack bgColor={'white'} mt="2">
+        <MotiImage
+          source={{ uri: 'https://homempizza.com.br/wp-content/uploads/2019/08/pizza.png' }}
+          style={{ height: 200 }}
+          resizeMode="contain"
+          from={{
+            rotate: '180deg',
+            opacity: 0,
+          }}
+          animate={{
+            rotate: '0deg',
+            opacity: 1
+          }}
+          transition={{
+            type: 'timing',
+            duration: 2000
+          }}
+        />
+        <HStack justifyContent="center">
+          <Text fontSize={"md"} fontWeight="semibold" my="6">
+            Don't have any products? Keep exploring!
+          </Text>
+        </HStack>
+      </VStack>
+      <ScrollView horizontal bgColor={'success.50'}>
         <FlatList data={products} renderItem={({ item: product }) => (
           <TouchableWithoutFeedback style={{ marginVertical: 20 }}>
             <ProductBox product={product} />

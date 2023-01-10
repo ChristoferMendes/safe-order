@@ -12,18 +12,18 @@ function createProductWithQuantityRequested(payload: ActionCart['payload']) {
 }
 
 function findProductIndex(state = initialState, payload: ActionCart['payload']) {
-  const { products } = state;
+  const { products: productsInState } = state;
   const { product } = payload;
-  const productIndex = products.findIndex((item) => item.uuid === product.uuid);
+  const productIndex = productsInState.findIndex((item) => item.uuid === product.uuid);
 
   return { productIndex };
 }
 
 function insertItem(state = initialState, payload: ActionCart['payload']) {
-  const { product } = payload;
   const { productWithQuantity } = createProductWithQuantityRequested(payload);
-  const copyOfProductsArray = state.products.slice();
-  copyOfProductsArray.splice(+product.uuid, 0, productWithQuantity);
+  const copyOfProductsArray = [...state.products];
+  const productUuidToNumber = +productWithQuantity.uuid;
+  copyOfProductsArray.splice(productUuidToNumber, 0, productWithQuantity);
 
   return copyOfProductsArray;
 }
@@ -46,7 +46,7 @@ function updateItem(state = initialState, payload: ActionCart['payload']) {
 
 function removeItem(state = initialState, payload: ActionCart['payload']) {
   const { productIndex } = findProductIndex(state, payload);
-  return state.products.filter((_, index) => index !== productIndex);
+  return state.products.filter((_, index) => index !== productIndex)
 }
 
 export { insertItem, updateItem, removeItem };

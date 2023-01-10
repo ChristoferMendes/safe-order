@@ -18,9 +18,9 @@ export const cartSlice = createSlice({
       return { ...state, products: updateItem(state, payload) }
     },
     removeProductInCart(state, { payload }) {
-      return { ...state, product: removeItem(state, payload) }
+      return { ...state, products: removeItem(state, payload) }
     }
-  }
+  },
 })
 
 export const { storeProductInCart, updateProductInCart, removeProductInCart } = cartSlice.actions;

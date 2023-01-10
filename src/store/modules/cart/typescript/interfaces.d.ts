@@ -1,9 +1,10 @@
 interface ICartProduct {
+  name: string;
   uuid: string;
   image_url: string;
   quantity: number;
   quantityRequested: number;
-  description: number;
+  description: string;
   price: number;
 }
 

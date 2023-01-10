@@ -5,18 +5,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 import {
   Text, HStack, Button, Icon, useToast, Box,
 } from 'native-base';
-import { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
 import { increaseQuantity } from '../../../store/modules/actionSheetButton/actions';
-import { IProduct } from '../../../store/modules/products/typescript';
 import { StateCart } from '../../../store/modules/cart/typescript/interfaces';
 import { removeProductInCart, selectCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/cartSlice';
+import { useActionSheetContext } from '../store/ActionSheetContext';
 
 type ButtonState = { quantity: number };
-type Cart = { products: IProduct[] }
 
 function Main({ children }: { children: ReactNode }) {
+
   return (
     <HStack
       w="xs"
@@ -29,10 +29,11 @@ function Main({ children }: { children: ReactNode }) {
   );
 }
 
-function QuantityButton({ productUuid }: { productUuid: string }) {
+function QuantityButton() {
   const dispatch = useDispatch();
+  const { product } = useActionSheetContext();
   const cart = useSelector<RootState, StateCart>((state) => state.cart);
-  const productExists = cart?.products.find((item) => item.uuid.match(productUuid));
+  const productExists = cart?.products.find((item) => item.uuid.match(product.uuid));
   const [quantity, setQuantity] = useState(productExists?.quantityRequested ?? 1);
 
   const handleAdd = () => {
@@ -45,7 +46,7 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
 
   useEffect(() => {
     if (quantity === 0 && productExists) {
-      dispatch(removeProductInCart(productUuid));
+      dispatch(removeProductInCart({ product }));
       return;
     }
 
@@ -65,11 +66,12 @@ function QuantityButton({ productUuid }: { productUuid: string }) {
   );
 }
 
-function PriceButton({ product, onClose }: { product: IProduct; onClose: () => void }) {
+function PriceButton({ onClose }: { onClose: () => void }) {
   const { quantity } = useSelector<RootState, ButtonState>((state) => state.actionSheetButton);
   const cart = useSelector<RootState, StateCart>(selectCart);
   const dispatch = useDispatch();
   const toast = useToast();
+  const { product } = useActionSheetContext();
 
   const currencyConverter = (value: number) => {
     const lang = 'en-US';

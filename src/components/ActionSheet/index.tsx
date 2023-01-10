@@ -7,6 +7,7 @@ import { ActionSheetSummary } from './ActionSheetSummary';
 import { ActionSheetDescription } from './ActionSheetDescription';
 import { ActionSheetButtonBox } from './ActionSheetButtonBox';
 import { IProduct } from '../../store/modules/products/typescript';
+import { ActionSheetProvider } from './store/ActionSheetContext';
 
 interface IActionSheetProps {
   isOpen: boolean;
@@ -22,7 +23,7 @@ export function ActionSheet({ isOpen, product, onClose }: IActionSheetProps) {
           <ProductImage imageLink={product.image_url} />
         </NativeBaseActionSheet.Item>
         <NativeBaseActionSheet.Item>
-          <ActionSheetSummary label="Vegetables with some fruits" />
+          <ActionSheetSummary label={product.description} />
         </NativeBaseActionSheet.Item>
         <NativeBaseActionSheet.Item>
           <ActionSheetDescription
@@ -40,10 +41,12 @@ export function ActionSheet({ isOpen, product, onClose }: IActionSheetProps) {
           </ActionSheetNutrientBox>
         </NativeBaseActionSheet.Item>
         <NativeBaseActionSheet.Item alignItems="center">
-          <ActionSheetButtonBox>
-            <ActionSheetButtonBox.QuantityButton productUuid={product.uuid} />
-            <ActionSheetButtonBox.PriceButton product={product} onClose={onClose}/>
-          </ActionSheetButtonBox>
+          <ActionSheetProvider product={product}>
+            <ActionSheetButtonBox>
+              <ActionSheetButtonBox.QuantityButton />
+              <ActionSheetButtonBox.PriceButton onClose={onClose} />
+            </ActionSheetButtonBox>
+          </ActionSheetProvider>
         </NativeBaseActionSheet.Item>
       </NativeBaseActionSheet.Content>
     </NativeBaseActionSheet>
