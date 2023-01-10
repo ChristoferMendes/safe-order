@@ -8,7 +8,7 @@ export function HomeSkeleton({ loading }: { loading: boolean }) {
   return (
     <>
       <Skeleton isLoaded={loading} display={"none"}>
-        <VStack alignItems={"center"}>
+        <VStack alignItems={"center"} mt="8">
           <SkeletonCarousel />
           <HStack space={"2"} mt="2">
             <SkeletonCarouselDot />
