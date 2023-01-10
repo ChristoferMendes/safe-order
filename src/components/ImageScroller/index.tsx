@@ -4,14 +4,14 @@ import {
   Animated, NativeScrollEvent, NativeSyntheticEvent,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { IProduct, StateProduct } from '../../store/modules/products/typescript';
+import { selectProduct } from '../../store/modules/products/productSlice';
+import { IProduct } from '../../store/modules/products/typescript';
 import { Carousel } from '../Carousel';
 import { SliderDot } from '../SliderDot';
 
 export function ImageScroller() {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const { products } = useSelector<RootState, StateProduct>(state => state.product)
+  const { products } = useSelector(selectProduct)
 
   const handleOnScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     Animated.event([{

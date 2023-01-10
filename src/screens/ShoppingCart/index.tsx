@@ -1,5 +1,5 @@
 import {
-  View, Text, FlatList, Image, HStack, VStack,
+  View, Text, FlatList, Image, HStack, VStack, ScrollView,
 } from 'native-base';
 import { useSelector } from 'react-redux';
 import { CartWithoutProducts } from '../../components/CartWithoutProducts';
@@ -11,7 +11,7 @@ export function ShoppingCart() {
   const currencyConverter = useCurrencyConverted();
 
   return (
-    <View>
+    <ScrollView horizontal={false}>
       {cart.products.length ? <FlatList
         data={cart.products}
         renderItem={({ item }) => (
@@ -22,10 +22,10 @@ export function ShoppingCart() {
               <Text>{currencyConverter(item.price * item.quantityRequested)}</Text>
             </VStack>
           </HStack>
-        )}  
+        )}
       /> : (
-        <CartWithoutProducts />
+          <CartWithoutProducts />
       )}
-    </View>
+    </ScrollView>
   );
 }

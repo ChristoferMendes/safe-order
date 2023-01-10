@@ -39,7 +39,9 @@ export function TabNavigator() {
         component={ShoppingCart}
         options={{
           tabBarIcon: ({ size, color }) => Icon({ size, color, name: 'shopping-cart' }),
+          unmountOnBlur: true
         }}
+        
       />
       <Tab.Screen
         name="Settings"

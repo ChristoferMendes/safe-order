@@ -5,7 +5,6 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { IProduct } from '../../store/modules/products/typescript';
 import { ActionSheet } from '../ActionSheet';
-import { URI } from 'react-native-dotenv';
 
 export function ProductBox({ product }: { product: IProduct }) {
   const {

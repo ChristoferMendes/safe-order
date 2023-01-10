@@ -18,4 +18,6 @@ interface ActionProduct {
   payload: IProduct[]
 }
 
-export { IProduct, StateProduct, ActionProduct } 
+type PayloadProduct = IProduct[]
+
+export { IProduct, StateProduct, ActionProduct, PayloadProduct } 

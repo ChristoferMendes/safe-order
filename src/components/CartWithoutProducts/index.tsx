@@ -1,7 +1,13 @@
 import { MotiImage } from 'moti'
-import { HStack, Text, VStack } from 'native-base';
+import { Box, FlatList, HStack, Image, ScrollView, Text, VStack } from 'native-base';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
+import { selectProduct } from '../../store/modules/products/productSlice';
+import { ProductBox } from '../ProductBox';
 
 export function CartWithoutProducts() {
+  const { products } = useSelector(selectProduct)
+
   return (
     <VStack>
       <MotiImage
@@ -22,15 +28,17 @@ export function CartWithoutProducts() {
         }}
       />
       <HStack justifyContent="center">
-        <Text fontSize={"md"} fontWeight="semibold">
-          You do not have any product in your cart!
+        <Text fontSize={"md"} fontWeight="semibold" my="6">
+          Don't have any products? Keep exploring!
         </Text>
       </HStack>
-      <MotiImage
-        source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3649/3649583.png' }}
-        style={{ height: 80 }}
-        resizeMode="contain"
-      />
+      <ScrollView horizontal>
+        <FlatList data={products} renderItem={({ item: product }) => (
+          <TouchableWithoutFeedback style={{ marginVertical: 20 }}>
+            <ProductBox product={product} />
+          </TouchableWithoutFeedback>
+        )} />
+      </ScrollView>
     </VStack>
   );
 }

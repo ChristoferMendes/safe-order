@@ -12,7 +12,7 @@ import { ImageScroller } from '../../components/ImageScroller';
 import { ProductsList } from '../../components/ProductsList';
 import { storageToken } from '../../constants/token-key';
 import { api } from '../../services/api';
-import { storeProductInfo } from '../../store/modules/products/actions';
+import { storeProductInfo } from '../../store/modules/products/productSlice';
 import { IProduct } from '../../store/modules/products/typescript';
 import { storeUserInfo } from '../../store/modules/users/actions';
 import { IUser } from '../Register/typescript';
