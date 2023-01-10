@@ -11,7 +11,7 @@ export function ShoppingCart() {
   const currencyConverter = useCurrencyConverted();
 
   return (
-    <ScrollView horizontal={false}>
+    <>
       {cart.products.length ? <FlatList
         data={cart.products}
         renderItem={({ item }) => (
@@ -24,8 +24,10 @@ export function ShoppingCart() {
           </HStack>
         )}
       /> : (
+        <ScrollView horizontal={false}>
           <CartWithoutProducts />
+        </ScrollView>
       )}
-    </ScrollView>
+    </>
   );
 }

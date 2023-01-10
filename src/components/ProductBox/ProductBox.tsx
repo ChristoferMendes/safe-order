@@ -1,10 +1,11 @@
 import {
-  View, Text, HStack, Image, VStack, useDisclose,
+  View, Text, HStack, VStack, useDisclose,
 } from 'native-base';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { IProduct } from '../../store/modules/products/typescript';
 import { ActionSheet } from '../ActionSheet';
+import { ProductImage } from '../ProductImage';
 
 export function ProductBox({ product }: { product: IProduct }) {
   const {
@@ -23,11 +24,11 @@ export function ProductBox({ product }: { product: IProduct }) {
     <TouchableWithoutFeedback>
       <HStack mx={10} onTouchEnd={handleOpenActionSheet}>
         <View>
-          <Image source={{ uri: product.image_url }} size={120} alt="" rounded="full" />
+          <ProductImage imageLink={product.image_url} rounded="full" alt="" />
         </View>
         <VStack justifyContent="center" space={3}>
           <View>
-            <Text maxW={160}>Vegetables with some....dsaddasdsadasdsadassaSasASaa</Text>
+            <Text maxW={160} ml="2">{product.description}</Text>
           </View>
           <HStack pl={3} justifyContent="space-around">
             <Text fontWeight="semibold">{priceNumberToCurrency}</Text>
