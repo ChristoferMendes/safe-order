@@ -1,5 +1,5 @@
 import {
-  FlatList, VStack, ScrollView,
+  FlatList, ScrollView, HStack
 } from 'native-base';
 import { useSelector } from 'react-redux';
 import { CartWithoutProducts } from '../../components/CartWithoutProducts';
@@ -14,9 +14,9 @@ export function ShoppingCart() {
       {cart.products.length ? <FlatList
         data={cart.products}
         renderItem={({ item: product }) => (
-          <VStack>
+          <HStack>
             <ProductBox product={product} />
-          </VStack>
+          </HStack>
         )}
       /> : (
         <ScrollView horizontal={false}>
