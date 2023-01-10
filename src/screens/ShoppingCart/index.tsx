@@ -9,7 +9,6 @@ import { selectCart } from '../../store/modules/cart/cartSlice';
 export function ShoppingCart() {
   const cart = useSelector(selectCart);
   const currencyConverter = useCurrencyConverted();
-  console.log('cart', cart)
 
   return (
     <View>
