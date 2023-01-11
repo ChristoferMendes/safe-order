@@ -1,10 +1,12 @@
-
 import { View } from 'native-base';
 import { ICartProduct } from '../../store/modules/cart/typescript/interfaces';
 import { CartProduct } from '../CartProduct';
 import { ProductImage } from '../ProductImage';
 
+
 export function CartProductsList({ product }: { product: ICartProduct }) {
+
+
   return (
     <View>
       <CartProduct product={product}>
