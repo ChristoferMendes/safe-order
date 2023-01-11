@@ -6,7 +6,13 @@ const initialState = {
 
 function createProductWithQuantityRequested(payload: ActionCart['payload']) {
   const { product, quantity } = payload;
-  const productWithQuantity = { ...product, quantityRequested: quantity };
+
+  const optionalQuantityKey = quantity && { quantityRequested: quantity }
+
+  const productWithQuantity = {
+    ...product,
+    ...(optionalQuantityKey)
+  };
 
   return { productWithQuantity };
 }

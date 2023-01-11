@@ -1,9 +1,11 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon as NativeBaseIcon } from 'native-base';
+import { useSelector } from 'react-redux';
 import { Home } from '../screens/Home';
 import { Settings } from '../screens/Settings';
 import { ShoppingCart } from '../screens/ShoppingCart';
+import { selectCart } from '../store/modules/cart/cartSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,6 +14,7 @@ function Icon({ size, color, name }: { size: number, color: string, name: string
 }
 
 export function TabNavigator() {
+  const { products: cartProducts } = useSelector(selectCart)
   return (
     <Tab.Navigator
       screenOptions={{
@@ -39,7 +42,8 @@ export function TabNavigator() {
         component={ShoppingCart}
         options={{
           tabBarIcon: ({ size, color }) => Icon({ size, color, name: 'shopping-cart' }),
-          unmountOnBlur: true
+          unmountOnBlur: true,
+          tabBarBadge: cartProducts.length || undefined
         }}
         
       />

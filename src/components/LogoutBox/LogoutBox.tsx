@@ -93,11 +93,10 @@ function Button() {
     setIsLoading(false);
   };
 
-  const handleLogout = () => {
-    removeToken().then(() => {
-      dispatch(invalidateToken());
-      onClose();
-    });
+  const handleLogout = async () => {
+    await removeToken()
+    dispatch(invalidateToken());
+    onClose();
   };
 
   return (

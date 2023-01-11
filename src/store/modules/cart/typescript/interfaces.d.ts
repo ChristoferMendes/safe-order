@@ -17,8 +17,10 @@ interface ActionCart {
   type: string;
   payload: {
     product: ICartProduct,
-    quantity: number;
+    quantity?: number;
   }
 }
 
-export { ActionCart, ICartProduct, StateCart };
+type PayloadCart = ActionCart['payload']
+
+export { ActionCart, ICartProduct, StateCart, PayloadCart };

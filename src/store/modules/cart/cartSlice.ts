@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../..";
-import { StateCart } from "./typescript/interfaces";
+import { PayloadCart, StateCart } from "./typescript/interfaces";
 import { insertItem, removeItem, updateItem } from './functions/array-manipulation'
 
 const initialState = {
@@ -11,13 +11,13 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    storeProductInCart(state, { payload }) {
+    storeProductInCart(state, { payload }: { payload: PayloadCart }) {
       return { ...state, products: insertItem(state, payload) }
     },
-    updateProductInCart(state, { payload }) {
+    updateProductInCart(state, { payload }: { payload: PayloadCart }) {
       return { ...state, products: updateItem(state, payload) }
     },
-    removeProductInCart(state, { payload }) {
+    removeProductInCart(state, { payload }: { payload: PayloadCart }) {
       return { ...state, products: removeItem(state, payload) }
     },
   },

@@ -1,28 +1,26 @@
 import {
-  FlatList, ScrollView, HStack
+  FlatList, ScrollView, View
 } from 'native-base';
 import { useSelector } from 'react-redux';
+import { CartProductsList } from '../../components/CartProductsList';
 import { CartWithoutProducts } from '../../components/CartWithoutProducts';
-import { ProductBox } from '../../components/ProductBox';
 import { selectCart } from '../../store/modules/cart/cartSlice';
+import { ICartProduct } from '../../store/modules/cart/typescript/interfaces';
 
 export function ShoppingCart() {
   const cart = useSelector(selectCart);
+  const renderCartProductsList = ({ item }: { item: ICartProduct }) => <CartProductsList product={item} />
 
   return (
-    <>
+    <View>
       {cart.products.length ? <FlatList
         data={cart.products}
-        renderItem={({ item: product }) => (
-          <HStack>
-            <ProductBox product={product} />
-          </HStack>
-        )}
+        renderItem={renderCartProductsList}
       /> : (
         <ScrollView horizontal={false}>
           <CartWithoutProducts />
         </ScrollView>
       )}
-    </>
+    </View>
   );
 }

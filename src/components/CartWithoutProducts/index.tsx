@@ -1,5 +1,5 @@
 import { MotiImage } from 'moti'
-import { Box, FlatList, HStack, Image, ScrollView, Text, VStack } from 'native-base';
+import { FlatList, HStack, ScrollView, Text, VStack } from 'native-base';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { selectProduct } from '../../store/modules/products/productSlice';
