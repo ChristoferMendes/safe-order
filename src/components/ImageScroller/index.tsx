@@ -27,10 +27,12 @@ export function ImageScroller() {
 
   const renderItem = ({ item }: { item: IProduct }) => <Carousel item={item} />;
 
+
+  const firstThreeProducts = products?.slice(0, 3)
   return (
     <View>
       <FlatList
-        data={products}
+        data={firstThreeProducts}
         renderItem={renderItem}
         horizontal
         pagingEnabled
@@ -38,7 +40,7 @@ export function ImageScroller() {
         onScroll={handleOnScroll}
       />
       <View display="flex" flexDir="row" justifyContent="center" mt={2}>
-        {products?.map((item, idx) => (
+        {firstThreeProducts?.map((item, idx) => (
           <SliderDot item={item} scrollX={scrollX} index={idx} key={item.uuid} />
         ))}
       </View>

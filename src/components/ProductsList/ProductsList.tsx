@@ -42,7 +42,7 @@ export function ProductsList() {
               >
                 Unfortunately we don't have products available for this category.
               </Text>
-              <Text fontWeight={"semibold"} fontSize="20" textAlign={'center'}>Please, explore our vast other categories!</Text>
+              <Text fontWeight={"semibold"} fontSize="20" textAlign={'center'}>Please, explore our other vast categories!</Text>
               <Icon as={MaterialIcons} name="sentiment-very-satisfied" size={"12"} color="green.500"/>
             </VStack>
           )}

@@ -25,7 +25,7 @@ export function Carousel({ item }: { item: IProduct }) {
       <Box
         bg={{
           linearGradient: {
-            colors: ['lightBlue.300', 'violet.500'],
+            colors: ['green.300', 'tertiary.400'],
             start: [0, 0],
             end: [1, 0],
           },

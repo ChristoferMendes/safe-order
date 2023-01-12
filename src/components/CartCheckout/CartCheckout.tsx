@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { Text, HStack, VStack, IconButton, Icon, Button } from 'native-base';
+import { Text, HStack, VStack, IconButton, Icon, Button, PresenceTransition } from 'native-base';
 import { useState } from 'react';
 import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,10 +35,11 @@ export function CartCheckout() {
   const total = subTotal + shipmentPrice;
   const totalInUSD = currencyConverter(total);
 
-  const subTotalIsHigherOrEqualThanThirty = subTotal >= 30
-  const shipmentFinal = subTotalIsHigherOrEqualThanThirty ? 0 : shipmentPrice;
+  const subTotalIsLowerOrEqualThanThirty = subTotal <= numberToReachForFreeShipment
+  const shipmentFinal = subTotalIsLowerOrEqualThanThirty ? shipmentPrice : 0;
   const shipmentFinalInUsd = currencyConverter(shipmentFinal);
   const missingPriceToFreeShipment = numberToReachForFreeShipment - subTotal;
+
 
   const date = new Date();
   const [hours, minutes] = [date.getHours(), date.getMinutes()];
@@ -46,7 +47,8 @@ export function CartCheckout() {
   const minutesSerialized = String(minutes + 3)
   const hourToBeShippedSooner = `${hoursSerialized}:${minutesSerialized.padStart(2, '0')}`
 
-  const missingPriceToFreeShipmentInUsd = currencyConverter(missingPriceToFreeShipment);
+  const finalPriceToFreeShipment = missingPriceToFreeShipment <= 0 ? 0 : missingPriceToFreeShipment
+  const missingPriceToFreeShipmentInUsd = currencyConverter(finalPriceToFreeShipment);
 
   const handleCheckout = () => {
     cartProducts.forEach((product) => {
@@ -81,19 +83,30 @@ export function CartCheckout() {
             <Text ml="4" fontSize={'2xl'} fontWeight="bold">{totalInUSD}</Text>
           </HStack>
         </VStack>
-        {!subTotalIsHigherOrEqualThanThirty && (
-          <HStack
-            bgColor={'tertiary.200'}
-            position="absolute"
-            right={'1'}
-            top="12"
-            rounded={'lg'}
-            p="1"
-          >
-            <Text w="40" color="black" fontWeight={'semibold'}>Buy more {missingPriceToFreeShipmentInUsd} dollars and earn free shipment</Text>
+        <PresenceTransition
+          visible={subTotalIsLowerOrEqualThanThirty}
+          initial={{
+            opacity: 0,
+            scale: 0
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            transition: {
+              duration: 250,
+            }
+          }}
+        >
+          <HStack left={"2"} bottom="2" position={"absolute"} bgColor={"tertiary.200"} p="1" rounded={"lg"}>
+            <Text
+              w="40"
+              color="black"
+              fontWeight={'semibold'}
+            >
+              Buy more {missingPriceToFreeShipmentInUsd} dollars and earn free shipment!
+            </Text>
           </HStack>
-        )
-        }
+        </PresenceTransition>
         <VStack h="24">
           <Button
             w={width - 30}

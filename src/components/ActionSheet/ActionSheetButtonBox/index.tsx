@@ -12,6 +12,7 @@ import { increaseQuantity } from '../../../store/modules/actionSheetButton/actio
 import { StateCart } from '../../../store/modules/cart/typescript/interfaces';
 import { removeProductInCart, selectCart, storeProductInCart, updateProductInCart } from '../../../store/modules/cart/cartSlice';
 import { useActionSheetContext } from '../store/ActionSheetContext';
+import { useNavigation } from '@react-navigation/native';
 
 type ButtonState = { quantity: number };
 
