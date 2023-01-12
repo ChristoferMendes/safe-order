@@ -2,9 +2,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Text, HStack, VStack, IconButton, Icon, Button } from 'native-base';
 import { useState } from 'react';
 import { Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
-import { selectCart } from '../../store/modules/cart/cartSlice';
+import { selectCart, removeProductInCart } from '../../store/modules/cart/cartSlice';
 
 
 const { width } = Dimensions.get('window')
@@ -15,6 +15,7 @@ export function CartCheckout() {
   const currencyConverter = useCurrencyConverted()
   const shipmentPrice = 3;
   const numberToReachForFreeShipment = 30;
+  const dispatch = useDispatch();
 
   const defineFavoriteIcon = isFavorite ? 'favorite' : 'favorite-outline'
 
@@ -45,7 +46,13 @@ export function CartCheckout() {
   const minutesSerialized = String(minutes + 3)
   const hourToBeShippedSooner = `${hoursSerialized}:${minutesSerialized.padStart(2, '0')}`
 
-  const missingPriceToFreeShipmentInUsd = currencyConverter(missingPriceToFreeShipment)
+  const missingPriceToFreeShipmentInUsd = currencyConverter(missingPriceToFreeShipment);
+
+  const handleCheckout = () => {
+    cartProducts.forEach((product) => {
+      dispatch(removeProductInCart({ product }))
+    })
+  }
 
   return (
     <HStack position="absolute" bottom={0} h="56" w={"full"} borderTopWidth={0.3} borderColor="gray.400" bgColor={'white'}>
@@ -96,10 +103,14 @@ export function CartCheckout() {
             _text={{
               fontWeight: 'bold',
             }}
+            onPress={handleCheckout}
+            _pressed={{
+              bgColor: 'green.400'
+            }}
           >
             Checkout
           </Button>
-          <HStack mt="2" alignItems={"center"}>
+          <HStack mt="2" alignItems={"center"} justifyContent="center">
             <Icon as={MaterialIcons} name="local-shipping" />
             <Text fontSize={'12'} ml="2" color="green.600">Receive in the next monday buying until today at {hourToBeShippedSooner}</Text>
           </HStack>
