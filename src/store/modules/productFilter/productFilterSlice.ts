@@ -11,7 +11,6 @@ const productFilterSlice = createSlice({
   name: 'productFilter',
   reducers: {
     setFilter(state, { payload }: { payload: CategoryEnum | null}) {
-      console.log('PAYLOAD:', payload)
       return { ...state, filter: payload }
     }
   }

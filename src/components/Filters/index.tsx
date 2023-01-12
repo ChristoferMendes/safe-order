@@ -1,4 +1,5 @@
-import { Button, FlatList } from 'native-base';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Button, FlatList, Icon } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectProductFilter, setFilter } from '../../store/modules/productFilter/productFilterSlice';
 import { CategoryEnum } from '../../store/modules/products/typescript/enum';
@@ -29,8 +30,9 @@ export function Filters({ loading }: { loading: boolean }) {
             _pressed={{
               bgColor: 'green.300'
             }}
+            rounded="full"
           >
-            Clean filter
+            <Icon as={MaterialIcons} name="close" color="white"/>
           </Button>
         )}
         <FilterButton item={item} handleSetCurrentFilter={handleSetCurrentFilter} />

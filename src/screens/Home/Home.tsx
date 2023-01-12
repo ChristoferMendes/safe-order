@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts } from 'expo-font';
 import {
-  View, ScrollView
+  View, ScrollView, Text
 } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,7 +21,7 @@ import { IUser } from '../Register/typescript';
 export function Home() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-
+  useFonts({ 'Sf-pro': require('../../../assets/fonts/SFPRODISPLAYMEDIUM.otf')});
   const dispatchUserInfo = (user: IUser) => {
     dispatch(storeUserInfo(user));
   };

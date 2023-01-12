@@ -1,5 +1,5 @@
 import {
-  View, Text, HStack, VStack, useDisclose,
+  View, Text, HStack, VStack, useDisclose, Box,
 } from 'native-base';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
@@ -19,7 +19,7 @@ export function ProductBox({ product }: { product: IProduct }) {
 
   const currencyConverter = useCurrencyConverted();
   const priceNumberToCurrency = currencyConverter(product.price);
-  
+
 
   return (
     <TouchableWithoutFeedback>
@@ -29,10 +29,12 @@ export function ProductBox({ product }: { product: IProduct }) {
         </View>
         <VStack justifyContent="center" space={3}>
           <View>
-            <Text maxW={160} ml="2">{product.description}</Text>
+            <Text maxW={160} ml="2" fontFamily={"Sf-pro"}>{product.description}</Text>
           </View>
-          <HStack pl={3} justifyContent="space-around">
-            <Text fontWeight="semibold">{priceNumberToCurrency}</Text>
+          <HStack pl={3} space={"4"} alignItems={"center"}>
+            <Box bgColor={'rgba(212, 212, 216, 0.6)'} py="2" px="4" rounded={"full"}>
+              <Text fontWeight="semibold">{priceNumberToCurrency}</Text>
+            </Box>
             <Text color="gray.300">325 Kcal</Text>
           </HStack>
         </VStack>

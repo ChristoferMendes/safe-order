@@ -124,7 +124,7 @@ export function CartCheckout() {
             Checkout
           </Button>
           <HStack mt="2" alignItems={"center"} justifyContent="center">
-            <Icon as={MaterialIcons} name="local-shipping" />
+            <Icon as={MaterialIcons} name="local-shipping" color={"black"} mt="auto" />
             <Text fontSize={'12'} ml="2" color="green.600">Receive in the next monday buying until today at {hourToBeShippedSooner}</Text>
           </HStack>
         </VStack>

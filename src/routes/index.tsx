@@ -18,7 +18,6 @@ export function Router() {
     return setIsAuthenticated(true);
   };
 
-  console.log(isAuthenticated)
 
   useEffect(() => {
     getTokenFromAsyncStorage();
