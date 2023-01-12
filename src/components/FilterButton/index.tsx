@@ -1,8 +1,23 @@
 import { Text, Button } from 'native-base';
+import { useSelector } from 'react-redux';
+import { selectProductFilter } from '../../store/modules/productFilter/productFilterSlice';
+import { IFilterButton } from './IFilterButton';
 
-export function FilterButton({ item }: { item: string }) {
+export function FilterButton({ item, handleSetCurrentFilter }: IFilterButton ) {
+  const { filter } = useSelector(selectProductFilter)
+  const isCurrentFilter = filter === item;
+
+  const setFilter = () => {
+    if (isCurrentFilter) {
+      handleSetCurrentFilter(null)
+      return;
+    }
+    handleSetCurrentFilter(item)
+  }
+
+  const defineBackgroundColor = isCurrentFilter ? 'green.300' : 'gray.200'
   return (
-    <Button mr="2" bgColor="gray.200" _pressed={{ bgColor: 'gray.300' }}>
+    <Button mr="2" bgColor={defineBackgroundColor} _pressed={{ bgColor: 'gray.300' }} onPress={setFilter}>
       <Text>{item}</Text>
     </Button>
   );

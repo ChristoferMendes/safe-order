@@ -19,6 +19,7 @@ export function ProductBox({ product }: { product: IProduct }) {
 
   const currencyConverter = useCurrencyConverted();
   const priceNumberToCurrency = currencyConverter(product.price);
+  
 
   return (
     <TouchableWithoutFeedback>
