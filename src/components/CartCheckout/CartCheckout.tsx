@@ -6,14 +6,15 @@ import { useSelector } from 'react-redux';
 import { useCurrencyConverted } from '../../hooks/useCurrencyConverter/useCurrencyConverter';
 import { selectCart } from '../../store/modules/cart/cartSlice';
 
+
 const { width } = Dimensions.get('window')
 
 export function CartCheckout() {
   const [isFavorite, setIsFavorite] = useState(false);
   const { products: cartProducts } = useSelector(selectCart)
   const currencyConverter = useCurrencyConverted()
-  const shipmentPrice = 12;
-  const shipmentPriceInUSD = currencyConverter(shipmentPrice)
+  const shipmentPrice = 3;
+  const numberToReachForFreeShipment = 30;
 
   const defineFavoriteIcon = isFavorite ? 'favorite' : 'favorite-outline'
 
@@ -26,11 +27,25 @@ export function CartCheckout() {
     const priceWithDiscount = curr - (curr * discount / 100);
     return acc + priceWithDiscount;
   }
-  const price = cartProducts.map(item => item.quantityRequested * item.price).reduce(sumPrice, 0)
-  const priceInUSD = currencyConverter(price);
 
-  const total = price + shipmentPrice;
+  const subTotal = cartProducts.map(item => item.quantityRequested * item.price).reduce(sumPrice, 0)
+  const subTotalInUSD = currencyConverter(subTotal);
+
+  const total = subTotal + shipmentPrice;
   const totalInUSD = currencyConverter(total);
+
+  const subTotalIsHigherOrEqualThanThirty = subTotal >= 30
+  const shipmentFinal = subTotalIsHigherOrEqualThanThirty ? 0 : shipmentPrice;
+  const shipmentFinalInUsd = currencyConverter(shipmentFinal);
+  const missingPriceToFreeShipment = numberToReachForFreeShipment - subTotal;
+
+  const date = new Date();
+  const [hours, minutes] = [date.getHours(), date.getMinutes()];
+  const hoursSerialized = hours + 1;
+  const minutesSerialized = String(minutes + 3)
+  const hourToBeShippedSooner = `${hoursSerialized}:${minutesSerialized.padStart(2, '0')}`
+
+  const missingPriceToFreeShipmentInUsd = currencyConverter(missingPriceToFreeShipment)
 
   return (
     <HStack position="absolute" bottom={0} h="56" w={"full"} borderTopWidth={0.3} borderColor="gray.400" bgColor={'white'}>
@@ -48,20 +63,30 @@ export function CartCheckout() {
         <VStack w={"full"} ml="4">
           <HStack>
             <Text fontSize={'sm'} fontWeight="semibold">Subtotal</Text>
-            <Text ml="5" fontSize={'sm'} fontWeight="semibold">{priceInUSD}</Text>
+            <Text ml="5" fontSize={'sm'} fontWeight="semibold">{subTotalInUSD}</Text>
           </HStack>
           <HStack>
-            <Text color="coolGray.400">Shipment</Text>
-            <Text ml="3" color="coolGray.400">{shipmentPriceInUSD}</Text>
+            <Text color="coolGray.300">Shipment</Text>
+            <Text ml="3" color="coolGray.300">{shipmentFinalInUsd}</Text>
           </HStack>
           <HStack>
             <Text fontSize={'2xl'} fontWeight="bold">Total</Text>
             <Text ml="4" fontSize={'2xl'} fontWeight="bold">{totalInUSD}</Text>
           </HStack>
         </VStack>
-        <HStack bgColor={'tertiary.200'} position="absolute" right={'1'} top="12" rounded={'lg'} p="1">
-          <Text w="40" color="black" fontWeight={'semibold'}>Buy more $ {10} dollars and earn free shipment</Text>
-        </HStack>
+        {!subTotalIsHigherOrEqualThanThirty && (
+          <HStack
+            bgColor={'tertiary.200'}
+            position="absolute"
+            right={'1'}
+            top="12"
+            rounded={'lg'}
+            p="1"
+          >
+            <Text w="40" color="black" fontWeight={'semibold'}>Buy more {missingPriceToFreeShipmentInUsd} dollars and earn free shipment</Text>
+          </HStack>
+        )
+        }
         <VStack h="24">
           <Button
             w={width - 30}
@@ -76,7 +101,7 @@ export function CartCheckout() {
           </Button>
           <HStack mt="2" alignItems={"center"}>
             <Icon as={MaterialIcons} name="local-shipping" />
-            <Text fontSize={'12'} ml="2" color="green.600">Receive in the next monday buying until today at 14:00</Text>
+            <Text fontSize={'12'} ml="2" color="green.600">Receive in the next monday buying until today at {hourToBeShippedSooner}</Text>
           </HStack>
         </VStack>
       </VStack>

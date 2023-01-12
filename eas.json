@@ -8,6 +8,9 @@
       "distribution": "internal"
     },
     "preview": {
+      "env": {
+        "URI": "https://1f8f-191-5-234-117.sa.ngrok.io"
+      },
       "distribution": "internal",
       "android": {
         "buildType": "apk"
