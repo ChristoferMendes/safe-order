@@ -16,9 +16,10 @@ export function FilterButton({ item, handleSetCurrentFilter }: IFilterButton ) {
   }
 
   const defineBackgroundColor = isCurrentFilter ? 'red.400' : 'gray.200'
+  const defineTextColor = isCurrentFilter ? 'white' : 'black'
   return (
     <Button mr="2" bgColor={defineBackgroundColor} _pressed={{ bgColor: 'gray.300' }} onPress={setFilter} rounded="lg">
-      <Text>{item}</Text>
+      <Text color={defineTextColor}>{item}</Text>
     </Button>
   );
 }
