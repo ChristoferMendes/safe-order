@@ -37,7 +37,7 @@ export default function Login() {
   const navigation = useNavigation<SignUpNavigation>();
   const showToast = useSuccesToast();
   const { user } = useSelector<RootState, StateUser>((state) => state.user);
-  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+  const { control, handleSubmit, formState: { errors }, setError } = useForm<FormDataProps>({
     resolver: yupResolver(loginSchema),
   });
 
@@ -62,7 +62,8 @@ export default function Login() {
       dispatch(setToken(tokenFromStorage));
       showToast({ message: 'Logged in with success' });
     } catch (e) {
-      console.log(e);
+      setError('email', { message: 'Wrong password/email combination' })
+      setError('password', { message: 'Wrong password/email combination' })
     }
     setLoading(false);
   };

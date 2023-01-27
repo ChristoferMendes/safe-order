@@ -12,15 +12,20 @@ export function Router() {
   const { token } = useSelector<RootState, StateToken>((state) => state.token);
 
   const getTokenFromAsyncStorage = async () => {
-    const token = await AsyncStorage.getItem(storageToken);
-    if (!token) return setIsAuthenticated(false);
+    const tokenFromAsyncStorage = await AsyncStorage.getItem(storageToken);
+    if (!tokenFromAsyncStorage) return setIsAuthenticated(false);
 
     return setIsAuthenticated(true);
   };
 
+  console.log('tokenState', token)
+
 
   useEffect(() => {
     getTokenFromAsyncStorage();
+    (async () => {
+      
+    })()
   }, [token]);
 
   return isAuthenticated ? <TabNavigator /> : <StackNavigator />;
